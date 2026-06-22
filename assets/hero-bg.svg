@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 620" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#bfe9d2"/>
+      <stop offset="0.55" stop-color="#e9f7ee"/>
+      <stop offset="1" stop-color="#f6fbf7"/>
+    </linearGradient>
+    <linearGradient id="sea" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2a8f6a"/>
+      <stop offset="1" stop-color="#7fc7a3"/>
+    </linearGradient>
+    <linearGradient id="sand" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#e8dcb0"/>
+      <stop offset="1" stop-color="#d7c890"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Sky -->
+  <rect width="1440" height="620" fill="url(#sky)"/>
+
+  <!-- Sun -->
+  <circle cx="1140" cy="150" r="78" fill="#ffffff" opacity="0.85"/>
+  <circle cx="1140" cy="150" r="78" fill="#bfe9d2" opacity="0.35"/>
+
+  <!-- Distant hills -->
+  <path d="M0 300 Q220 235 460 285 T940 270 T1440 290 L1440 360 L0 360 Z" fill="#9ed9b6" opacity="0.6"/>
+  <path d="M0 330 Q260 280 540 320 T1080 305 T1440 325 L1440 380 L0 380 Z" fill="#6fc095" opacity="0.7"/>
+
+  <!-- Sea -->
+  <rect y="330" width="1440" height="150" fill="url(#sea)"/>
+  <!-- Surf line -->
+  <path d="M0 470 Q180 450 360 468 T720 468 T1080 468 T1440 466 L1440 500 L0 500 Z" fill="#ffffff" opacity="0.5"/>
+  <!-- Wave glints -->
+  <g stroke="#ffffff" stroke-width="3" stroke-linecap="round" opacity="0.45" fill="none">
+    <path d="M120 400 q22 -10 44 0"/>
+    <path d="M360 420 q22 -10 44 0"/>
+    <path d="M650 405 q22 -10 44 0"/>
+    <path d="M980 418 q22 -10 44 0"/>
+    <path d="M1230 402 q22 -10 44 0"/>
+  </g>
+
+  <!-- Beach / sand -->
+  <path d="M0 480 Q280 455 620 485 T1180 488 T1440 482 L1440 620 L0 620 Z" fill="url(#sand)"/>
+  <path d="M0 500 Q300 478 640 506 T1200 508 T1440 502 L1440 620 L0 620 Z" fill="#efe6c4" opacity="0.6"/>
+
+  <!-- Race route map line winding along the coast -->
+  <path d="M70 545 C 250 500, 360 560, 520 520 S 820 470, 980 510 S 1260 470, 1380 500"
+        fill="none" stroke="#0a5a2c" stroke-width="5" stroke-dasharray="2 16" stroke-linecap="round" opacity="0.85"/>
+
+  <!-- Route markers -->
+  <g opacity="0.9">
+    <!-- start flag -->
+    <g transform="translate(70 545)">
+      <rect x="-2" y="-44" width="4" height="44" fill="#0a5a2c"/>
+      <path d="M2 -44 L34 -36 L2 -28 Z" fill="#e7401f"/>
+    </g>
+    <!-- water-drop aid stations -->
+    <g fill="#1bb05c" stroke="#ffffff" stroke-width="2">
+      <path d="M520 514 c -9 -14 -9 -22 0 -30 c 9 8 9 16 0 30 Z"/>
+      <path d="M980 504 c -9 -14 -9 -22 0 -30 c 9 8 9 16 0 30 Z"/>
+    </g>
+    <!-- pin -->
+    <g transform="translate(1380 500)" fill="#0a5a2c" stroke="#ffffff" stroke-width="2">
+      <path d="M0 -2 c -12 -16 -12 -26 0 -32 c 12 6 12 16 0 32 Z"/>
+      <circle cx="0" cy="-22" r="4" fill="#ffffff" stroke="none"/>
+    </g>
+  </g>
+
+  <!-- Palm silhouette -->
+  <g transform="translate(150 500)" fill="#0a5a2c" opacity="0.55">
+    <path d="M0 0 C -4 -40 -2 -80 6 -120 C 8 -82 8 -42 10 0 Z"/>
+    <g stroke="#0a5a2c" stroke-width="6" stroke-linecap="round" fill="none">
+      <path d="M6 -120 C -30 -140 -60 -132 -78 -112"/>
+      <path d="M6 -120 C -18 -156 6 -176 34 -176"/>
+      <path d="M6 -120 C 36 -150 72 -146 92 -124"/>
+      <path d="M6 -120 C 30 -110 56 -96 70 -72"/>
+    </g>
+  </g>
+</svg>
