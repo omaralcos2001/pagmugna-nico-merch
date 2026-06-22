@@ -71,7 +71,11 @@
     /* Hero */
     .hero {
       position: relative; overflow: hidden;
-      background: linear-gradient(135deg, var(--green-d) 0%, var(--green) 45%, var(--green-bright) 100%);
+      background-color: var(--green-d);
+      background-image:
+        linear-gradient(135deg, rgba(10,90,44,.88) 0%, rgba(15,122,61,.80) 45%, rgba(27,176,92,.82) 100%),
+        url('assets/hero-map.jpg');
+      background-size: cover; background-position: center;
       color: #fff; text-align: center; padding: 72px 24px 80px;
     }
     .hero::before, .hero::after {
@@ -94,6 +98,21 @@
       transition: transform .15s, box-shadow .15s; box-shadow: 0 8px 20px rgba(0,0,0,.15);
     }
     .hero .cta:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(0,0,0,.22); }
+    .music-btn {
+      display: inline-flex; align-items: center; gap: 8px; margin-top: 16px;
+      background: rgba(255,255,255,0.14); border: 1.5px solid rgba(255,255,255,0.45);
+      color: #fff; font-weight: 700; font-size: 14px; padding: 11px 20px; border-radius: 999px;
+      cursor: pointer; transition: background .15s, transform .15s; backdrop-filter: blur(4px);
+    }
+    .music-btn:hover { background: rgba(255,255,255,0.24); transform: translateY(-1px); }
+    .music-btn.playing { background: #fff; color: var(--green-d); border-color: #fff; }
+    .music-btn.playing .eq { display: inline-flex; }
+    .eq { display: none; align-items: flex-end; gap: 2px; height: 14px; }
+    .eq i { width: 3px; background: var(--green); border-radius: 2px; animation: eq 0.9s ease-in-out infinite; }
+    .eq i:nth-child(1){ height: 6px; animation-delay: 0s; }
+    .eq i:nth-child(2){ height: 12px; animation-delay: .2s; }
+    .eq i:nth-child(3){ height: 8px; animation-delay: .4s; }
+    @keyframes eq { 0%,100%{ transform: scaleY(.5); } 50%{ transform: scaleY(1); } }
 
     /* Event band */
     .event {
@@ -333,7 +352,14 @@
       <h1>PAGMOVE-ON MERCH</h1>
       <p>by Doc Nico — gear up and #MoveOnWithDocNico</p>
       <a class="cta" href="#shop">Shop the collection ↓</a>
+      <div>
+        <button class="music-btn" id="musicBtn" onclick="toggleSong()">
+          <span class="eq"><i></i><i></i><i></i></span>
+          <span id="musicLabel">🎵 Click this kung gusto ka MAGMAOY</span>
+        </button>
+      </div>
     </div>
+    <audio id="bgSong" src="assets/paubaya.mp3" loop preload="none"></audio>
   </section>
 
   <section class="event" id="event">
@@ -373,11 +399,11 @@
       </div>
       <div class="foot-col">
         <b>Contact</b>
-        <span>Maasin City, S. Leyte</span>
+        <span>Ormoc City, Leyte</span>
         <span>omaralcos2001@gmail.com</span>
       </div>
     </div>
-    <div class="foot-bottom">© 2026 PAGMOVE-ON MERCH by Doc Nico. All rights reserved. Site by Omar Alcos.</div>
+    <div class="foot-bottom">© 2026 PAGMOVE-ON MERCH by Doc Nico. All rights reserved. Site by <a href="https://web.facebook.com/profile.php?id=61583154564932" target="_blank" rel="noopener" style="color:#fff;text-decoration:underline">Omar Alcos</a>.</div>
   </footer>
 
   <!-- Quick view modal -->
@@ -714,6 +740,23 @@
       t.textContent = msg; t.classList.add('show');
       clearTimeout(toastTimer);
       toastTimer = setTimeout(()=>t.classList.remove('show'), 2400);
+    }
+
+    // ---- Background music ----
+    function toggleSong(){
+      const a = document.getElementById('bgSong');
+      const btn = document.getElementById('musicBtn');
+      const label = document.getElementById('musicLabel');
+      if (a.paused){
+        a.play().then(()=>{
+          btn.classList.add('playing');
+          label.textContent = 'Magmaoy ka lang… (i-pause)';
+        }).catch(()=>{ label.textContent = '⚠️ Add assets/paubaya.mp3 first'; });
+      } else {
+        a.pause();
+        btn.classList.remove('playing');
+        label.textContent = '🎵 Click this kung gusto ka MAGMAOY';
+      }
     }
 
     document.addEventListener('keydown', e => { if(e.key === 'Escape'){ closeModal(); closeCart(); closeCheckout(); } });

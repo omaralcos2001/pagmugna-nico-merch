@@ -17,6 +17,8 @@ looks good either way.
 | `buff.jpg`          | Neck Gaiter / Buff |
 | `tote-sage.jpg`     | Heritage Tote Bag — Sage (green logo) |
 | `payment-qr.png`    | **Your payment QR code** (GCash / Maya / bank) shown at checkout |
+| `hero-map.jpg`      | **Route map** shown faded (green-tinted) behind the hero heading |
+| `paubaya.mp3`       | Background song that plays from the hero button *(already added)* |
 
 Tip: square images (1:1) look best. `.jpg` or `.png` both work — if you use PNG,
 either rename to `.jpg` or update the path in `index.html`.
