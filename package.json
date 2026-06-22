@@ -2,9 +2,9 @@
   "name": "pagmugna-nico-merch",
   "version": "1.0.0",
   "private": true,
-  "description": "Pagmugna x Nico merch order form — frontend + Vercel serverless backend writing to Google Sheets.",
+  "description": "PAGMOVE-ON MERCH by Doc Nico — parody merch store with QR checkout that emails order PDFs.",
   "type": "module",
   "dependencies": {
-    "googleapis": "^144.0.0"
+    "resend": "^4.0.0"
   }
 }

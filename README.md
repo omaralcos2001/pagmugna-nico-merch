@@ -1,76 +1,65 @@
-# Pagmugna × Nico — Merch Order Form
+# PAGMOVE-ON MERCH by Doc Nico
 
-A public merch order form. Static frontend (`index.html`) + a Vercel serverless
-backend (`api/submit.js`) that appends each order as a row in a Google Sheet.
+A parody merch store (static `index.html`) with a QR-code checkout. Customers
+pick items, scan a payment QR, upload their proof of payment, and submit. A
+Vercel serverless function (`api/submit.js`) emails the order — as a PDF plus the
+proof image — to the store owner.
 
 ```
-index.html        → the order form (served as the homepage)
-api/submit.js      → POST endpoint, validates + writes to Google Sheets
-package.json       → backend dependency (googleapis)
-vercel.json        → Vercel config
+index.html         → the store + checkout flow (order PDF is built in the browser)
+api/submit.js       → POST endpoint, emails the PDF + proof via Resend
+assets/             → product photos + payment QR (see assets/README.md)
+package.json        → backend dependency (resend)
+vercel.json         → Vercel config
 ```
 
 ## How it works
 
-Visitor fills the form → browser POSTs JSON to `/api/submit` → the serverless
-function validates it and appends a row to your Google Sheet.
+Customer fills the cart → Checkout → enters name / contact / address → scans the
+payment QR → uploads proof → "Proceed to submit". The browser builds an order PDF
+(with the proof embedded) and sends it to `/api/submit`, which emails everything
+to the owner.
 
 ---
 
 ## Setup
 
-### 1. Create the Google Sheet
+### 1. Add your images
+Drop product photos and your payment QR into `assets/` (see `assets/README.md`).
+The QR must be named **`payment-qr.png`**.
 
-1. Make a new Google Sheet.
-2. Rename the first tab to **`Orders`**.
-3. (Optional) Add a header row in row 1:
-   `Timestamp | Name | Email | Phone | Item | Size | Qty | Address | Notes`
-4. Copy the **Sheet ID** from the URL:
-   `https://docs.google.com/spreadsheets/d/`**`THIS_PART`**`/edit`
+### 2. Get a Resend API key (free)
+1. Sign up at <https://resend.com> — **use omaralcos2001@gmail.com** as the account
+   email so test sends work immediately without a custom domain.
+2. Go to **API Keys → Create API Key**, copy the key (starts with `re_`).
 
-### 2. Create a Google service account
+### 3. Add the env var in Vercel
+Project → **Settings → Environment Variables**:
 
-1. Go to <https://console.cloud.google.com/> → create/select a project.
-2. **APIs & Services → Library** → enable **Google Sheets API**.
-3. **APIs & Services → Credentials → Create credentials → Service account.**
-4. Once created, open it → **Keys → Add key → Create new key → JSON**. A JSON
-   file downloads. From it you need:
-   - `client_email`  → this is `GOOGLE_SERVICE_ACCOUNT_EMAIL`
-   - `private_key`   → this is `GOOGLE_PRIVATE_KEY`
-5. **Share the Sheet** with that `client_email` (give **Editor** access), exactly
-   like sharing with a person. This is what lets the function write to it.
+| Name | Value |
+|------|-------|
+| `RESEND_API_KEY` | the `re_...` key from Resend |
+| `ORDER_EMAIL` *(optional)* | where orders are sent (defaults to `omaralcos2001@gmail.com`) |
 
-### 3. Deploy to Vercel
+Redeploy after adding it.
 
-1. Go to <https://vercel.com> → **Add New → Project** → import this GitHub repo.
-2. Framework preset: **Other**. No build command needed.
-3. Add **Environment Variables** (Project Settings → Environment Variables):
+> The sender is `onboarding@resend.dev` (Resend's shared test sender). With it you
+> can only send to the email that owns the Resend account — which is why step 2
+> uses omaralcos2001@gmail.com. To send from your own domain / to other addresses,
+> verify a domain in Resend and change the `from:` line in `api/submit.js`.
 
-   | Name | Value |
-   |------|-------|
-   | `GOOGLE_SERVICE_ACCOUNT_EMAIL` | the `client_email` from the JSON |
-   | `GOOGLE_PRIVATE_KEY` | the full `private_key` from the JSON, including `-----BEGIN…END-----` |
-   | `GOOGLE_SHEET_ID` | the Sheet ID from step 1 |
-
-   > For `GOOGLE_PRIVATE_KEY`, paste the whole value. If newlines get flattened
-   > into `\n`, that's fine — the code converts `\n` back to real newlines.
-
-4. **Deploy.** Your form is now public at `https://<your-project>.vercel.app`.
+### 4. Deploy
+Push to GitHub and import the repo in Vercel (Framework preset: **Other**). Each
+push auto-redeploys.
 
 ### Test
-Open the deployed URL, submit a test order, and confirm a new row appears in the
-**Orders** tab of your Sheet.
+Open the live site → add items → checkout → upload any image as proof → submit.
+An email with `order.pdf` + the proof image should arrive at the order address.
 
 ---
 
-## Local development (optional)
-
-```bash
-npm install
-npm i -g vercel
-vercel dev          # add the 3 env vars to a .env.local first
-```
-
 ## Notes
-- `.env*` and `node_modules/` are gitignored — never commit your private key.
-- Want email alerts on each order too? That can be added to `api/submit.js`.
+- Proof images are downscaled in the browser before upload to stay within limits.
+- Checkout only works on the deployed site (the `/api/submit` function needs a
+  server) — opening `index.html` directly will show the store but not submit.
+- `.env*` and `node_modules/` are gitignored.
