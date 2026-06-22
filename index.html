@@ -3,205 +3,320 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pagmugna x Nico — Merch Order</title>
+  <title>PAGMUGNA MERCH by Doc Nico</title>
   <style>
     :root {
-      --bg: #0f0f12;
-      --card: #1a1a20;
-      --accent: #e7401f;
-      --accent-d: #c5340f;
-      --text: #f2f2f0;
-      --muted: #9a9aa2;
-      --border: #2c2c35;
-      --ok: #2ecc71;
-      --err: #ff5b5b;
+      --green: #0f7a3d;
+      --green-d: #0a5a2c;
+      --green-l: #14964b;
+      --mint: #eaf6ee;
+      --ink: #14241a;
+      --muted: #5d7568;
+      --white: #ffffff;
+      --border: #d8e6dc;
+      --shadow: 0 10px 30px rgba(15,122,61,0.12);
     }
-    * { box-sizing: border-box; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      margin: 0;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      background: radial-gradient(1200px 600px at 50% -10%, #20202a 0%, var(--bg) 60%);
-      color: var(--text);
-      min-height: 100vh;
-      display: flex;
-      align-items: flex-start;
-      justify-content: center;
-      padding: 40px 16px 80px;
+      color: var(--ink);
+      background: var(--white);
+      line-height: 1.5;
     }
-    .wrap { width: 100%; max-width: 560px; }
-    .brand {
-      text-align: center;
-      margin-bottom: 28px;
+    a { color: inherit; text-decoration: none; }
+
+    /* Header */
+    header {
+      position: sticky; top: 0; z-index: 50;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
     }
-    .brand h1 {
-      font-size: 28px;
-      letter-spacing: 0.5px;
-      margin: 0 0 6px;
+    .nav {
+      max-width: 1200px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 24px;
     }
-    .brand .tag { color: var(--muted); font-size: 14px; margin: 0; }
+    .logo { display: flex; align-items: center; gap: 12px; }
+    .logo .mark {
+      width: 40px; height: 40px; border-radius: 50%;
+      background: var(--green); color: #fff;
+      display: grid; place-items: center; font-weight: 800; font-size: 18px;
+    }
+    .logo .txt b { display: block; font-size: 16px; letter-spacing: 0.3px; }
+    .logo .txt span { font-size: 12px; color: var(--muted); }
+    .cart-btn {
+      position: relative; background: var(--green); color: #fff;
+      border: none; padding: 10px 18px; border-radius: 999px;
+      font-weight: 700; font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 8px;
+      transition: background .15s;
+    }
+    .cart-btn:hover { background: var(--green-d); }
+    .cart-count {
+      background: #fff; color: var(--green); border-radius: 999px;
+      min-width: 20px; height: 20px; padding: 0 6px;
+      display: grid; place-items: center; font-size: 12px; font-weight: 800;
+    }
+
+    /* Hero */
+    .hero {
+      background: linear-gradient(135deg, var(--green) 0%, var(--green-l) 60%, #1bb05c 100%);
+      color: #fff; text-align: center; padding: 56px 24px 64px;
+    }
+    .hero h1 { font-size: 38px; letter-spacing: 0.5px; }
+    .hero p { margin-top: 10px; opacity: 0.92; font-size: 16px; }
+    .hero .pill {
+      display: inline-block; margin-bottom: 16px; padding: 6px 14px;
+      background: rgba(255,255,255,0.18); border-radius: 999px; font-size: 13px; font-weight: 600;
+    }
+
+    /* Grid */
+    .wrap { max-width: 1200px; margin: 0 auto; padding: 40px 24px 80px; }
+    .section-title { font-size: 22px; margin-bottom: 4px; }
+    .section-sub { color: var(--muted); margin-bottom: 26px; font-size: 14px; }
+    .grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 24px;
+    }
     .card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 28px;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+      background: #fff; border: 1px solid var(--border); border-radius: 16px;
+      overflow: hidden; display: flex; flex-direction: column;
+      transition: transform .2s, box-shadow .2s;
     }
-    label {
-      display: block;
-      font-size: 13px;
-      font-weight: 600;
-      margin: 0 0 6px;
-      color: var(--text);
+    .card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+    .thumb {
+      position: relative; aspect-ratio: 1 / 1; overflow: hidden;
+      background: var(--mint); cursor: pointer;
     }
-    .req { color: var(--accent); }
-    .field { margin-bottom: 18px; }
-    input, select, textarea {
-      width: 100%;
-      background: #121217;
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      color: var(--text);
-      padding: 12px 14px;
-      font-size: 15px;
-      font-family: inherit;
-      transition: border-color 0.15s;
+    .thumb img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+      transition: transform .45s ease;
     }
-    input:focus, select:focus, textarea:focus {
-      outline: none;
-      border-color: var(--accent);
+    .card:hover .thumb img { transform: scale(1.12); }
+    .thumb .ph {
+      position: absolute; inset: 0; display: grid; place-items: center; text-align: center;
+      color: #fff; font-weight: 800; letter-spacing: 1px; font-size: 13px; padding: 16px;
+      text-shadow: 0 1px 6px rgba(0,0,0,.25);
     }
-    textarea { resize: vertical; min-height: 70px; }
-    .row { display: flex; gap: 14px; }
-    .row .field { flex: 1; }
-    button {
-      width: 100%;
-      background: var(--accent);
-      color: #fff;
-      border: none;
-      border-radius: 10px;
-      padding: 14px;
-      font-size: 16px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: background 0.15s;
-      margin-top: 6px;
+    .badge {
+      position: absolute; top: 12px; left: 12px; z-index: 2;
+      background: var(--green); color: #fff; font-size: 11px; font-weight: 700;
+      padding: 4px 10px; border-radius: 999px; letter-spacing: .3px;
     }
-    button:hover { background: var(--accent-d); }
-    button:disabled { opacity: 0.6; cursor: not-allowed; }
-    .msg {
-      margin-top: 16px;
-      padding: 12px 14px;
-      border-radius: 10px;
-      font-size: 14px;
-      display: none;
+    .body { padding: 16px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
+    .name { font-weight: 700; font-size: 15px; }
+    .desc { font-size: 12.5px; color: var(--muted); flex: 1; }
+    .price-row { display: flex; align-items: center; justify-content: space-between; margin-top: 4px; }
+    .price { font-weight: 800; color: var(--green); font-size: 17px; }
+    .add {
+      background: var(--mint); color: var(--green-d); border: 1px solid var(--border);
+      border-radius: 10px; padding: 9px 14px; font-weight: 700; font-size: 13px; cursor: pointer;
+      transition: background .15s, color .15s;
     }
-    .msg.show { display: block; }
-    .msg.ok { background: rgba(46,204,113,0.12); color: var(--ok); border: 1px solid rgba(46,204,113,0.4); }
-    .msg.err { background: rgba(255,91,91,0.12); color: var(--err); border: 1px solid rgba(255,91,91,0.4); }
-    .foot { text-align: center; color: var(--muted); font-size: 12px; margin-top: 22px; }
+    .add:hover { background: var(--green); color: #fff; border-color: var(--green); }
+
+    /* Cart drawer */
+    .overlay {
+      position: fixed; inset: 0; background: rgba(10,30,18,.45);
+      opacity: 0; pointer-events: none; transition: opacity .25s; z-index: 60;
+    }
+    .overlay.open { opacity: 1; pointer-events: auto; }
+    .drawer {
+      position: fixed; top: 0; right: 0; height: 100%; width: 380px; max-width: 90vw;
+      background: #fff; z-index: 70; transform: translateX(100%); transition: transform .28s ease;
+      display: flex; flex-direction: column; box-shadow: -10px 0 40px rgba(0,0,0,.15);
+    }
+    .drawer.open { transform: translateX(0); }
+    .drawer h3 { padding: 20px; border-bottom: 1px solid var(--border); font-size: 18px; display: flex; justify-content: space-between; align-items: center; }
+    .drawer .close { background: none; border: none; font-size: 24px; cursor: pointer; color: var(--muted); line-height: 1; }
+    .items { flex: 1; overflow-y: auto; padding: 8px 20px; }
+    .empty { color: var(--muted); text-align: center; padding: 40px 0; font-size: 14px; }
+    .line { display: flex; gap: 12px; padding: 14px 0; border-bottom: 1px solid var(--border); }
+    .line .lthumb { width: 56px; height: 56px; border-radius: 10px; flex-shrink: 0; background: var(--mint); background-size: cover; background-position: center; }
+    .line .linfo { flex: 1; }
+    .line .lname { font-weight: 600; font-size: 14px; }
+    .line .lprice { color: var(--green); font-weight: 700; font-size: 13px; }
+    .qty { display: flex; align-items: center; gap: 8px; margin-top: 6px; }
+    .qty button { width: 24px; height: 24px; border-radius: 6px; border: 1px solid var(--border); background: #fff; cursor: pointer; font-weight: 700; }
+    .qty span { font-size: 13px; min-width: 18px; text-align: center; }
+    .remove { background: none; border: none; color: #b33; font-size: 12px; cursor: pointer; margin-left: auto; }
+    .foot { padding: 20px; border-top: 1px solid var(--border); }
+    .total { display: flex; justify-content: space-between; font-weight: 800; font-size: 17px; margin-bottom: 14px; }
+    .checkout {
+      width: 100%; background: var(--green); color: #fff; border: none; border-radius: 12px;
+      padding: 15px; font-size: 16px; font-weight: 800; cursor: pointer; transition: background .15s;
+    }
+    .checkout:hover { background: var(--green-d); }
+    .checkout:disabled { opacity: .5; cursor: not-allowed; }
+    .note { text-align: center; font-size: 11px; color: var(--muted); margin-top: 10px; }
+
+    footer { text-align: center; padding: 30px; color: var(--muted); font-size: 13px; border-top: 1px solid var(--border); }
+
+    .toast {
+      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(20px);
+      background: var(--ink); color: #fff; padding: 12px 20px; border-radius: 999px;
+      font-size: 14px; opacity: 0; pointer-events: none; transition: all .3s; z-index: 80;
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    @media (max-width: 600px) {
+      .hero h1 { font-size: 28px; }
+      .logo .txt b { font-size: 14px; }
+    }
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <div class="brand">
-      <h1>PAGMUGNA × NICO</h1>
-      <p class="tag">Official merch order form</p>
+  <header>
+    <div class="nav">
+      <div class="logo">
+        <div class="mark">PM</div>
+        <div class="txt">
+          <b>PAGMUGNA MERCH</b>
+          <span>by Doc Nico</span>
+        </div>
+      </div>
+      <button class="cart-btn" onclick="openCart()">
+        🛒 Cart <span class="cart-count" id="cartCount">0</span>
+      </button>
     </div>
-    <div class="card">
-      <form id="orderForm">
-        <div class="field">
-          <label for="name">Full name <span class="req">*</span></label>
-          <input type="text" id="name" name="name" required />
-        </div>
-        <div class="row">
-          <div class="field">
-            <label for="email">Email <span class="req">*</span></label>
-            <input type="email" id="email" name="email" required />
-          </div>
-          <div class="field">
-            <label for="phone">Phone</label>
-            <input type="tel" id="phone" name="phone" />
-          </div>
-        </div>
-        <div class="field">
-          <label for="item">Item <span class="req">*</span></label>
-          <select id="item" name="item" required>
-            <option value="" disabled selected>Select an item</option>
-            <option>Classic Tee</option>
-            <option>Premium Hoodie</option>
-            <option>Snapback Cap</option>
-            <option>Tote Bag</option>
-            <option>Sticker Pack</option>
-          </select>
-        </div>
-        <div class="row">
-          <div class="field">
-            <label for="size">Size <span class="req">*</span></label>
-            <select id="size" name="size" required>
-              <option value="" disabled selected>Size</option>
-              <option>XS</option><option>S</option><option>M</option>
-              <option>L</option><option>XL</option><option>XXL</option>
-              <option>One size</option>
-            </select>
-          </div>
-          <div class="field">
-            <label for="quantity">Quantity <span class="req">*</span></label>
-            <input type="number" id="quantity" name="quantity" min="1" value="1" required />
-          </div>
-        </div>
-        <div class="field">
-          <label for="address">Shipping address / pickup <span class="req">*</span></label>
-          <textarea id="address" name="address" required></textarea>
-        </div>
-        <div class="field">
-          <label for="notes">Notes</label>
-          <textarea id="notes" name="notes" placeholder="Anything else we should know?"></textarea>
-        </div>
-        <button type="submit" id="submitBtn">Place order</button>
-        <div class="msg" id="msg"></div>
-      </form>
+  </header>
+
+  <section class="hero">
+    <span class="pill">Southern Leyte Pagmugna Ultramarathon · Official Store</span>
+    <h1>PAGMUGNA MERCH</h1>
+    <p>by Doc Nico — gear up and #MoveOnWithDocNico</p>
+  </section>
+
+  <main class="wrap">
+    <h2 class="section-title">Shop the collection</h2>
+    <p class="section-sub">Tap any item to add it to your cart, then check out.</p>
+    <div class="grid" id="grid"></div>
+  </main>
+
+  <footer>© 2026 PAGMUGNA MERCH by Doc Nico · Maasin City, Southern Leyte</footer>
+
+  <!-- Cart -->
+  <div class="overlay" id="overlay" onclick="closeCart()"></div>
+  <aside class="drawer" id="drawer" aria-label="Shopping cart">
+    <h3>Your cart <button class="close" onclick="closeCart()">×</button></h3>
+    <div class="items" id="items"><p class="empty">Your cart is empty.</p></div>
+    <div class="foot">
+      <div class="total"><span>Total</span><span id="total">₱0</span></div>
+      <button class="checkout" id="checkoutBtn" onclick="checkout()" disabled>Checkout</button>
+      <p class="note">Demo checkout — orders aren’t recorded yet.</p>
     </div>
-    <p class="foot">Your details are sent securely and recorded for order fulfillment only.</p>
-  </div>
+  </aside>
+
+  <div class="toast" id="toast"></div>
 
   <script>
-    const form = document.getElementById('orderForm');
-    const btn = document.getElementById('submitBtn');
-    const msg = document.getElementById('msg');
+    // Product catalog. Drop matching images into assets/ (see filenames) and they appear automatically.
+    const PRODUCTS = [
+      { id:'cap-white',    name:'Trucker Cap — White/Green',        price:350, badge:'Bestseller', img:'assets/cap-white.jpg',    grad:'linear-gradient(135deg,#0f7a3d,#14964b)', label:'TRUCKER CAP' },
+      { id:'tee-obsidian', name:'Performance Tee — Obsidian Marble', price:650, badge:'New',        img:'assets/tee-obsidian.jpg', grad:'linear-gradient(135deg,#0b1d24,#0e5f63,#c9a24b)', label:'PERFORMANCE TEE' },
+      { id:'tee-glacier',  name:'Performance Tee — Glacier Marble',  price:650, badge:'',           img:'assets/tee-glacier.jpg',  grad:'linear-gradient(135deg,#15406b,#e8eef0,#1aa0a0)', label:'PERFORMANCE TEE' },
+      { id:'tote-emerald', name:'Event Tote Bag — Emerald',          price:250, badge:'',           img:'assets/tote-emerald.jpg', grad:'linear-gradient(135deg,#0a5a2c,#0f7a3d)', label:'TOTE BAG' },
+      { id:'singlet-dark', name:'Running Singlet — Obsidian',        price:550, badge:'No collar',  img:'assets/singlet-dark.jpg', grad:'linear-gradient(135deg,#0b1d24,#0e5f63,#c9a24b)', label:'RUNNING SINGLET' },
+      { id:'cap-green',    name:'Trucker Cap — Full Green',          price:350, badge:'',           img:'assets/cap-green.jpg',    grad:'linear-gradient(135deg,#0a5a2c,#0f7a3d)', label:'TRUCKER CAP' },
+      { id:'singlet-light',name:'Running Singlet — Glacier',         price:550, badge:'',           img:'assets/singlet-light.jpg',grad:'linear-gradient(135deg,#15406b,#e8eef0,#1aa0a0)', label:'RUNNING SINGLET' },
+      { id:'arm-sleeves',  name:'Arm Sleeves — Marble',              price:300, badge:'',           img:'assets/arm-sleeves.jpg',  grad:'linear-gradient(135deg,#0b1d24,#e8eef0,#c9a24b)', label:'ARM SLEEVES' },
+      { id:'buff',         name:'Neck Gaiter / Buff — Marble',       price:200, badge:'',           img:'assets/buff.jpg',         grad:'linear-gradient(135deg,#15406b,#e8eef0,#1aa0a0)', label:'NECK GAITER' },
+      { id:'tote-sage',    name:'Heritage Tote Bag — Sage',          price:250, badge:'',           img:'assets/tote-sage.jpg',    grad:'linear-gradient(135deg,#cfe3cd,#0f7a3d)', label:'TOTE BAG' },
+    ];
 
-    function showMsg(text, ok) {
-      msg.textContent = text;
-      msg.className = 'msg show ' + (ok ? 'ok' : 'err');
+    const peso = n => '₱' + n.toLocaleString();
+    const cart = {}; // id -> qty
+
+    // Render grid
+    const grid = document.getElementById('grid');
+    PRODUCTS.forEach(p => {
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = `
+        <div class="thumb" onclick="addToCart('${p.id}')">
+          ${p.badge ? `<span class="badge">${p.badge}</span>` : ''}
+          <div class="ph" style="background:${p.grad}">${p.label}</div>
+          <img src="${p.img}" alt="${p.name}" onload="this.style.opacity=1"
+               style="opacity:0;position:relative;z-index:1"
+               onerror="this.remove()" />
+        </div>
+        <div class="body">
+          <div class="name">${p.name}</div>
+          <div class="desc">Southern Leyte Pagmugna Ultramarathon official merch.</div>
+          <div class="price-row">
+            <span class="price">${peso(p.price)}</span>
+            <button class="add" onclick="addToCart('${p.id}')">Add to cart</button>
+          </div>
+        </div>`;
+      grid.appendChild(card);
+    });
+
+    function addToCart(id){
+      cart[id] = (cart[id]||0) + 1;
+      renderCart();
+      const p = PRODUCTS.find(x=>x.id===id);
+      toast(`${p.name} added`);
+    }
+    function changeQty(id, d){
+      cart[id] = (cart[id]||0) + d;
+      if (cart[id] <= 0) delete cart[id];
+      renderCart();
+    }
+    function removeItem(id){ delete cart[id]; renderCart(); }
+
+    function renderCart(){
+      const ids = Object.keys(cart);
+      const count = ids.reduce((s,id)=>s+cart[id],0);
+      document.getElementById('cartCount').textContent = count;
+      const itemsEl = document.getElementById('items');
+      const checkoutBtn = document.getElementById('checkoutBtn');
+
+      if(!ids.length){
+        itemsEl.innerHTML = '<p class="empty">Your cart is empty.</p>';
+        document.getElementById('total').textContent = '₱0';
+        checkoutBtn.disabled = true;
+        return;
+      }
+      let total = 0;
+      itemsEl.innerHTML = ids.map(id=>{
+        const p = PRODUCTS.find(x=>x.id===id);
+        const sub = p.price*cart[id]; total += sub;
+        return `<div class="line">
+          <div class="lthumb" style="background-image:url('${p.img}'), ${p.grad}"></div>
+          <div class="linfo">
+            <div class="lname">${p.name}</div>
+            <div class="lprice">${peso(p.price)}</div>
+            <div class="qty">
+              <button onclick="changeQty('${id}',-1)">−</button>
+              <span>${cart[id]}</span>
+              <button onclick="changeQty('${id}',1)">+</button>
+              <button class="remove" onclick="removeItem('${id}')">Remove</button>
+            </div>
+          </div>
+        </div>`;
+      }).join('');
+      document.getElementById('total').textContent = peso(total);
+      checkoutBtn.disabled = false;
     }
 
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      btn.disabled = true;
-      btn.textContent = 'Submitting…';
-      msg.className = 'msg';
+    function openCart(){ document.getElementById('drawer').classList.add('open'); document.getElementById('overlay').classList.add('open'); }
+    function closeCart(){ document.getElementById('drawer').classList.remove('open'); document.getElementById('overlay').classList.remove('open'); }
 
-      const data = Object.fromEntries(new FormData(form).entries());
+    function checkout(){
+      const count = Object.values(cart).reduce((s,n)=>s+n,0);
+      const total = Object.keys(cart).reduce((s,id)=>s+PRODUCTS.find(x=>x.id===id).price*cart[id],0);
+      toast(`🎉 Order placed: ${count} item(s), ${peso(total)}`);
+      Object.keys(cart).forEach(k=>delete cart[k]);
+      renderCart(); closeCart();
+    }
 
-      try {
-        const res = await fetch('/api/submit', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(data),
-        });
-        const out = await res.json().catch(() => ({}));
-        if (res.ok) {
-          showMsg('Order received! We’ll be in touch by email. 🎉', true);
-          form.reset();
-        } else {
-          showMsg(out.error || 'Something went wrong. Please try again.', false);
-        }
-      } catch (err) {
-        showMsg('Network error. Please try again.', false);
-      } finally {
-        btn.disabled = false;
-        btn.textContent = 'Place order';
-      }
-    });
+    let toastTimer;
+    function toast(msg){
+      const t = document.getElementById('toast');
+      t.textContent = msg; t.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(()=>t.classList.remove('show'), 2200);
+    }
   </script>
 </body>
 </html>
