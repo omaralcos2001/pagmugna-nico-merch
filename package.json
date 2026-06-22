@@ -1,0 +1,10 @@
+{
+  "name": "pagmugna-nico-merch",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Pagmugna x Nico merch order form — frontend + Vercel serverless backend writing to Google Sheets.",
+  "type": "module",
+  "dependencies": {
+    "googleapis": "^144.0.0"
+  }
+}
