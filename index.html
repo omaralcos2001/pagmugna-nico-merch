@@ -372,6 +372,12 @@
       <h1>PAGMOVE-ON MERCH</h1>
       <p>by Doc Nico — gear up and #MoveOnWithDocNico</p>
       <a class="cta" href="#shop">Shop the collection ↓</a>
+      <div>
+        <button class="music-btn" id="musicBtn" onclick="toggleSong()">
+          <span class="eq"><i></i><i></i><i></i></span>
+          <span id="musicLabel">🎵 Click this kung gusto ka MAGMAOY</span>
+        </button>
+      </div>
     </div>
     <audio id="bgSong" src="assets/paubaya.mp3" loop preload="auto"></audio>
   </section>
@@ -775,19 +781,22 @@
     function openEvent(e){ if(e) e.preventDefault(); document.getElementById('eventOverlay').classList.add('open'); document.body.style.overflow = 'hidden'; }
     function closeEvent(){ document.getElementById('eventOverlay').classList.remove('open'); document.body.style.overflow = ''; }
 
-    // ---- Background music: play on open, retry on any interaction ----
-    const EVENTS = ['click','keydown','scroll','touchstart','pointerdown'];
-    function startMusic(){
-      const a = document.getElementById('bgSong');
-      if(!a) return;
-      a.volume = 0.6;
-      a.play().then(() => {
-        EVENTS.forEach(ev => document.removeEventListener(ev, startMusic));
-      }).catch(() => { /* blocked — will retry on next interaction */ });
+    // ---- Background music: button toggle + autoplay attempt ----
+    const bgSong = document.getElementById('bgSong');
+    const AUTO = ['click','keydown','scroll','touchstart','pointerdown'];
+    function syncMusicBtn(){
+      const btn = document.getElementById('musicBtn'), label = document.getElementById('musicLabel');
+      if(bgSong.paused){ btn.classList.remove('playing'); label.textContent = '🎵 Click this kung gusto ka MAGMAOY'; }
+      else { btn.classList.add('playing'); label.textContent = 'Magmaoy ka lang… (i-pause)'; }
     }
+    function toggleSong(){ if(bgSong.paused) bgSong.play().catch(()=>{}); else bgSong.pause(); }
+    function autostart(){ bgSong.play().catch(()=>{}); }
+    bgSong.addEventListener('play', () => { AUTO.forEach(ev => document.removeEventListener(ev, autostart)); syncMusicBtn(); });
+    bgSong.addEventListener('pause', syncMusicBtn);
     window.addEventListener('load', () => {
-      startMusic(); // try immediate autoplay
-      EVENTS.forEach(ev => document.addEventListener(ev, startMusic)); // retry until it succeeds
+      bgSong.volume = 0.6;
+      bgSong.play().catch(()=>{});                          // try autoplay
+      AUTO.forEach(ev => document.addEventListener(ev, autostart)); // else start on first interaction
     });
 
     document.addEventListener('keydown', e => { if(e.key === 'Escape'){ closeModal(); closeCart(); closeCheckout(); closeEvent(); } });
