@@ -15,8 +15,8 @@ export default async function handler(req, res) {
   const b = typeof req.body === 'string' ? safeParse(req.body) : (req.body || {});
   const { name, contact, address, email, items = [], total = 0, pdfBase64, proof } = b;
 
-  if (!name || !contact || !address) {
-    return res.status(400).json({ error: 'Missing name, contact or address.' });
+  if (!name || !contact || !address || !email) {
+    return res.status(400).json({ error: 'Missing name, contact, email or address.' });
   }
   if (!pdfBase64) {
     return res.status(400).json({ error: 'Missing order summary.' });
@@ -37,27 +37,64 @@ export default async function handler(req, res) {
     attachments.push({ filename: proof.filename || 'proof.jpg', content: Buffer.from(proof.base64, 'base64') });
   }
 
+  const FROM = 'PAGMOVE-ON MERCH <onboarding@resend.dev>';
+  const totalStr = Number(total).toLocaleString();
+
+  // Email 1 — to the store owner (full details + attachments)
+  const ownerEmail = {
+    from: FROM,
+    to: [to],
+    replyTo: email,
+    subject: `New order — ${name} (₱${totalStr})`,
+    html: `
+      <h2>New PAGMOVE-ON MERCH order</h2>
+      <p>
+        <b>Name:</b> ${esc(name)}<br/>
+        <b>Contact:</b> ${esc(contact)}<br/>
+        <b>Email:</b> ${esc(email)}<br/>
+        <b>Address:</b> ${esc(address)}
+      </p>
+      <h3>Items</h3>
+      <ul>${itemsHtml}</ul>
+      <p><b>Total: ₱${totalStr}</b></p>
+      <p>The full order summary (PDF) and the customer's payment proof are attached.</p>`,
+    attachments,
+  };
+
+  // Email 2 — to the customer (confirmation, sent separately)
+  const customerEmail = {
+    from: FROM,
+    to: [email],
+    replyTo: to,
+    subject: `We received your PAGMOVE-ON MERCH order, ${name}!`,
+    html: `
+      <h2>Salamat, ${esc(name)}! 🎉</h2>
+      <p>We’ve received your order and your payment proof. We’ll confirm and arrange delivery shortly.</p>
+      <h3>Your order</h3>
+      <ul>${itemsHtml}</ul>
+      <p><b>Total: ₱${totalStr}</b></p>
+      <p><b>Deliver to:</b> ${esc(address)}</p>
+      <p>A copy of your order summary is attached.</p>
+      <p style="color:#5d7568;font-size:13px">PAGMOVE-ON MERCH by Doc Nico · #MoveOnWithDocNico</p>`,
+    attachments: [{ filename: 'order.pdf', content: Buffer.from(pdfBase64, 'base64') }],
+  };
+
   try {
-    await resend.emails.send({
-      from: 'PAGMOVE-ON MERCH <onboarding@resend.dev>',
-      to: [to],
-      replyTo: email || undefined,
-      subject: `New order — ${name} (₱${Number(total).toLocaleString()})`,
-      html: `
-        <h2>New PAGMOVE-ON MERCH order</h2>
-        <p>
-          <b>Name:</b> ${esc(name)}<br/>
-          <b>Contact:</b> ${esc(contact)}<br/>
-          <b>Email:</b> ${esc(email || '—')}<br/>
-          <b>Address:</b> ${esc(address)}
-        </p>
-        <h3>Items</h3>
-        <ul>${itemsHtml}</ul>
-        <p><b>Total: ₱${Number(total).toLocaleString()}</b></p>
-        <p>The full order summary (PDF) and the customer's payment proof are attached.</p>`,
-      attachments,
-    });
-    return res.status(200).json({ ok: true });
+    // Owner email is required to succeed
+    const ownerRes = await resend.emails.send(ownerEmail);
+    if (ownerRes?.error) throw new Error(ownerRes.error.message || 'owner email failed');
+
+    // Customer email is best-effort (may be blocked until a domain is verified in Resend)
+    let customerSent = true, customerNote;
+    try {
+      const custRes = await resend.emails.send(customerEmail);
+      if (custRes?.error) { customerSent = false; customerNote = custRes.error.message; }
+    } catch (e) {
+      customerSent = false; customerNote = e?.message;
+    }
+    if (!customerSent) console.warn('Customer confirmation not sent:', customerNote);
+
+    return res.status(200).json({ ok: true, customerSent });
   } catch (err) {
     console.error('Email send failed:', err?.message || err);
     return res.status(500).json({ error: 'Could not send your order. Please try again.' });

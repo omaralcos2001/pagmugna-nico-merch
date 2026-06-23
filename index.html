@@ -438,7 +438,7 @@
           <input id="coName" type="text" autocomplete="name" />
           <label for="coContact">Contact number *</label>
           <input id="coContact" type="tel" autocomplete="tel" />
-          <label for="coEmail">Email (for confirmation)</label>
+          <label for="coEmail">Email *</label>
           <input id="coEmail" type="email" autocomplete="email" />
           <label for="coAddress">Complete delivery address *</label>
           <textarea id="coAddress" autocomplete="street-address"></textarea>
@@ -703,7 +703,8 @@
     async function submitOrder(){
       const name = val('coName'), contact = val('coContact'), email = val('coEmail'), address = val('coAddress');
       const warn = document.getElementById('coWarn');
-      if(!name || !contact || !address){ warn.textContent = 'Please fill in your name, contact number and address.'; return; }
+      if(!name || !contact || !email || !address){ warn.textContent = 'Please fill in your name, contact, email and address.'; return; }
+      if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ warn.textContent = 'Please enter a valid email address.'; return; }
       if(!proofData){ warn.textContent = 'Please upload your proof of payment.'; return; }
 
       const btn = document.getElementById('coSubmit');
