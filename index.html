@@ -189,8 +189,13 @@
       transform: scale(.96); transition: transform .25s; max-height: 90vh;
     }
     .modal-overlay.open .modal { transform: scale(1); }
-    .modal .m-img { position: relative; aspect-ratio: 1/1; background: var(--mint); }
-    .modal .m-img img { width: 100%; height: 100%; object-fit: cover; }
+    .modal .m-img { position: relative; aspect-ratio: 1/1; background: var(--mint); overflow: hidden; }
+    .gallery { position: absolute; inset: 0; z-index: 1; display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+    .gallery::-webkit-scrollbar { display: none; }
+    .gallery img { flex: 0 0 100%; width: 100%; height: 100%; object-fit: cover; scroll-snap-align: center; }
+    .g-nav { position: absolute; top: 50%; transform: translateY(-50%); z-index: 3; width: 38px; height: 38px; border-radius: 50%; border: none; background: rgba(255,255,255,.9); color: var(--ink); font-size: 22px; line-height: 1; cursor: pointer; display: grid; place-items: center; box-shadow: 0 2px 8px rgba(0,0,0,.15); }
+    .g-nav:hover { background: #fff; }
+    .g-prev { left: 10px; } .g-next { right: 10px; }
     .modal .m-img .ph {
       position: absolute; inset: 0; display: grid; place-items: center; text-align: center;
       color: #fff; font-weight: 800; letter-spacing: 1.2px; font-size: 15px;
@@ -529,6 +534,7 @@
         <div class="thumb">
           ${p.badge ? `<span class="badge">${p.badge}</span>` : ''}
           <div class="ph" style="background:${p.grad}">${p.label}</div>
+          <img src="assets/${p.id}-1.jpg" alt="${p.name}" onload="this.style.opacity=1" style="opacity:0;position:relative;z-index:1" onerror="this.remove()" />
           <div class="quick">Quick view</div>
         </div>
         <div class="body">
@@ -558,6 +564,11 @@
         <button class="m-close" onclick="closeModal()">×</button>
         <div class="m-img">
           <div class="ph" style="background:${p.grad}">${p.label}</div>
+          <div class="gallery" id="gallery">
+            ${[1,2,3,4,5,6].map(n => `<img src="assets/${p.id}-${n}.jpg" alt="${p.name} ${n}" onerror="this.remove(); galNav();" onload="galNav();">`).join('')}
+          </div>
+          <button class="g-nav g-prev" type="button" onclick="galScroll(-1)">‹</button>
+          <button class="g-nav g-next" type="button" onclick="galScroll(1)">›</button>
         </div>
         <div class="m-body">
           <div class="m-name">${p.name}</div>
@@ -582,6 +593,12 @@
       document.body.style.overflow = 'hidden';
     }
     function closeModal(){ document.getElementById('modalOverlay').classList.remove('open'); document.body.style.overflow = ''; }
+    function galScroll(dir){ const g = document.getElementById('gallery'); if(g) g.scrollBy({ left: dir * g.clientWidth, behavior: 'smooth' }); }
+    function galNav(){ // show arrows only when there's more than one image
+      const g = document.getElementById('gallery'); if(!g) return;
+      const many = g.querySelectorAll('img').length > 1;
+      document.querySelectorAll('.g-nav').forEach(b => b.style.display = many ? 'grid' : 'none');
+    }
     function pickSize(s){
       selSize = s;
       document.querySelectorAll('#sizes .size-opt').forEach(b => b.classList.toggle('sel', b.textContent === s));
@@ -627,7 +644,7 @@
         const it = cart[k], p = find(it.id);
         total += p.price * it.qty;
         return `<div class="line">
-          <div class="lthumb" style="background:${p.grad}"></div>
+          <div class="lthumb" style="background-image:url('assets/${p.id}-1.jpg'), ${p.grad}; background-size:cover; background-position:center;"></div>
           <div class="linfo">
             <div class="lname">${p.name}</div>
             <div class="lsize">Size: ${it.size}</div>
