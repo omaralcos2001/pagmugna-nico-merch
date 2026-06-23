@@ -312,6 +312,23 @@
     .qr-box img { width: 100%; height: 100%; object-fit: contain; position: relative; z-index: 1; }
     .qr-box .qr-ph { position: absolute; inset: 0; display: grid; place-items: center; text-align: center; font-size: 12px; color: var(--muted); padding: 12px; }
     .qr-box.noqr img { display: none; }
+    /* Event modal */
+    .event-modal {
+      position: relative; background: #fff; border-radius: 20px;
+      max-width: 560px; width: 100%; max-height: 90vh; overflow-y: auto; padding: 36px 34px;
+      transform: scale(.96); transition: transform .25s;
+    }
+    .modal-overlay.open .event-modal { transform: scale(1); }
+    .ev-title { font-size: 24px; line-height: 1.2; color: var(--green-d); }
+    .ev-sub { color: var(--green); font-weight: 700; margin: 8px 0 20px; font-size: 14px; }
+    .event-modal p { font-size: 14.5px; margin-bottom: 14px; color: var(--ink); }
+    .ev-tag { font-style: italic; color: var(--green-d); font-weight: 600; }
+    .ev-link {
+      display: inline-block; margin-top: 10px; background: var(--green); color: #fff;
+      font-weight: 700; padding: 12px 22px; border-radius: 999px; font-size: 14px; transition: background .15s;
+    }
+    .ev-link:hover { background: var(--green-d); }
+
     #coProof { width: 100%; font-size: 13px; margin-top: 8px; }
     .co-preview { margin-top: 12px; }
     .co-preview img { max-width: 100%; max-height: 220px; border-radius: 10px; border: 1px solid var(--border); }
@@ -339,7 +356,7 @@
       </a>
       <div class="nav-actions">
         <a class="nav-link" href="#shop">Shop</a>
-        <a class="nav-link" href="#event">Event</a>
+        <a class="nav-link" href="#event" onclick="openEvent(event)">Event</a>
         <button class="cart-btn" onclick="openCart()">
           🛒 Cart <span class="cart-count" id="cartCount">0</span>
         </button>
@@ -353,14 +370,8 @@
       <h1>PAGMOVE-ON MERCH</h1>
       <p>by Doc Nico — gear up and #MoveOnWithDocNico</p>
       <a class="cta" href="#shop">Shop the collection ↓</a>
-      <div>
-        <button class="music-btn" id="musicBtn" onclick="toggleSong()">
-          <span class="eq"><i></i><i></i><i></i></span>
-          <span id="musicLabel">🎵 Click this kung gusto ka MAGMAOY</span>
-        </button>
-      </div>
     </div>
-    <audio id="bgSong" src="assets/paubaya.mp3" loop preload="none"></audio>
+    <audio id="bgSong" src="assets/paubaya.mp3" loop preload="auto"></audio>
   </section>
 
   <section class="event" id="event">
@@ -401,7 +412,7 @@
       <div class="foot-col">
         <b>Contact</b>
         <span>Ormoc City, Leyte</span>
-        <span>omaralcos2001@gmail.com</span>
+        <span>coy.nunez19@gmail.com</span>
       </div>
     </div>
     <div class="foot-bottom">© 2026 PAGMOVE-ON MERCH by Doc Nico. All rights reserved. Site by <a href="https://web.facebook.com/profile.php?id=61583154564932" target="_blank" rel="noopener" style="color:#fff;text-decoration:underline">Omar Alcos</a>.</div>
@@ -423,6 +434,19 @@
       <p class="note">Next: pay via QR code and upload your proof of payment.</p>
     </div>
   </aside>
+
+  <!-- Event modal -->
+  <div class="modal-overlay" id="eventOverlay" onclick="if(event.target===this) closeEvent()">
+    <div class="event-modal">
+      <button class="m-close" onclick="closeEvent()">×</button>
+      <h3 class="ev-title">Southern Leyte Pagmugna Ultramarathon</h3>
+      <p class="ev-sub">June 28, 2026 · Capitol Sunken Garden, Maasin City</p>
+      <p>From the heat and grind of <strong>Maasin City</strong>’s streets, pushing through the long, unforgiving stretches of <strong>Macrohon</strong>, then battling the exposed coastal winds of <strong>Padre Burgos</strong>—this route will wear you down before it builds you back up.</p>
+      <p>No shortcuts. No comfort. Just you, the distance, and the discipline to keep moving when everything in you says stop.</p>
+      <p class="ev-tag"><strong>Pagmugna</strong>—because every finisher is forged, not given.</p>
+      <a class="ev-link" href="https://web.facebook.com/profile.php?id=61570695086357" target="_blank" rel="noopener">For more info, visit our Facebook page →</a>
+    </div>
+  </div>
 
   <!-- Checkout modal -->
   <div class="modal-overlay" id="checkoutOverlay" onclick="if(event.target===this) closeCheckout()">
@@ -744,24 +768,25 @@
       toastTimer = setTimeout(()=>t.classList.remove('show'), 2400);
     }
 
-    // ---- Background music ----
-    function toggleSong(){
-      const a = document.getElementById('bgSong');
-      const btn = document.getElementById('musicBtn');
-      const label = document.getElementById('musicLabel');
-      if (a.paused){
-        a.play().then(()=>{
-          btn.classList.add('playing');
-          label.textContent = 'Magmaoy ka lang… (i-pause)';
-        }).catch(()=>{ label.textContent = '⚠️ Add assets/paubaya.mp3 first'; });
-      } else {
-        a.pause();
-        btn.classList.remove('playing');
-        label.textContent = '🎵 Click this kung gusto ka MAGMAOY';
-      }
-    }
+    // ---- Event popup ----
+    function openEvent(e){ if(e) e.preventDefault(); document.getElementById('eventOverlay').classList.add('open'); document.body.style.overflow = 'hidden'; }
+    function closeEvent(){ document.getElementById('eventOverlay').classList.remove('open'); document.body.style.overflow = ''; }
 
-    document.addEventListener('keydown', e => { if(e.key === 'Escape'){ closeModal(); closeCart(); closeCheckout(); } });
+    // ---- Background music: auto-play 2s after load ----
+    window.addEventListener('load', () => {
+      const a = document.getElementById('bgSong');
+      a.volume = 0.6;
+      setTimeout(() => {
+        a.play().catch(() => {
+          // Browsers block autoplay until the user interacts — start on first gesture
+          const start = () => { a.play().catch(()=>{}); cleanup(); };
+          const cleanup = () => ['click','scroll','keydown','touchstart'].forEach(ev => document.removeEventListener(ev, start));
+          ['click','scroll','keydown','touchstart'].forEach(ev => document.addEventListener(ev, start, { once: true }));
+        });
+      }, 2000);
+    });
+
+    document.addEventListener('keydown', e => { if(e.key === 'Escape'){ closeModal(); closeCart(); closeCheckout(); closeEvent(); } });
   </script>
 </body>
 </html>
