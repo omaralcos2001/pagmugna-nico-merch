@@ -772,18 +772,16 @@
     function openEvent(e){ if(e) e.preventDefault(); document.getElementById('eventOverlay').classList.add('open'); document.body.style.overflow = 'hidden'; }
     function closeEvent(){ document.getElementById('eventOverlay').classList.remove('open'); document.body.style.overflow = ''; }
 
-    // ---- Background music: auto-play 2s after load ----
+    // ---- Background music: auto-play on page open ----
     window.addEventListener('load', () => {
       const a = document.getElementById('bgSong');
       a.volume = 0.6;
-      setTimeout(() => {
-        a.play().catch(() => {
-          // Browsers block autoplay until the user interacts — start on first gesture
-          const start = () => { a.play().catch(()=>{}); cleanup(); };
-          const cleanup = () => ['click','scroll','keydown','touchstart'].forEach(ev => document.removeEventListener(ev, start));
-          ['click','scroll','keydown','touchstart'].forEach(ev => document.addEventListener(ev, start, { once: true }));
-        });
-      }, 2000);
+      a.play().catch(() => {
+        // Browsers block autoplay until the user interacts — start on first gesture
+        const start = () => { a.play().catch(()=>{}); cleanup(); };
+        const cleanup = () => ['click','scroll','keydown','touchstart'].forEach(ev => document.removeEventListener(ev, start));
+        ['click','scroll','keydown','touchstart'].forEach(ev => document.addEventListener(ev, start, { once: true }));
+      });
     });
 
     document.addEventListener('keydown', e => { if(e.key === 'Escape'){ closeModal(); closeCart(); closeCheckout(); closeEvent(); } });
