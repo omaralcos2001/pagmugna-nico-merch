@@ -473,7 +473,7 @@
         <div class="m-label">1 · Pay via GCash / bank</div>
         <p class="co-hint">Scan the QR code below and pay the exact total amount.</p>
         <div class="qr-box" id="qrBox">
-          <img src="assets/payment-qr.png" alt="GCash payment QR code" onerror="document.getElementById('qrBox').classList.add('noqr')" />
+          <img src="assets/payment-qr.png" alt="GCash payment QR code" onerror="if(!this.dataset.j){this.dataset.j=1;this.src='assets/payment-qr.jpg';}else{document.getElementById('qrBox').classList.add('noqr');}" />
           <span class="qr-ph">Add your payment QR as<br/><b>assets/payment-qr.png</b></span>
         </div>
         <p class="co-gcash">GCash · <b>0931 212 6265</b> · NI*O N.</p>
@@ -775,16 +775,19 @@
     function openEvent(e){ if(e) e.preventDefault(); document.getElementById('eventOverlay').classList.add('open'); document.body.style.overflow = 'hidden'; }
     function closeEvent(){ document.getElementById('eventOverlay').classList.remove('open'); document.body.style.overflow = ''; }
 
-    // ---- Background music: auto-play on page open ----
-    window.addEventListener('load', () => {
+    // ---- Background music: play on open, retry on any interaction ----
+    const EVENTS = ['click','keydown','scroll','touchstart','pointerdown'];
+    function startMusic(){
       const a = document.getElementById('bgSong');
+      if(!a) return;
       a.volume = 0.6;
-      a.play().catch(() => {
-        // Browsers block autoplay until the user interacts — start on first gesture
-        const start = () => { a.play().catch(()=>{}); cleanup(); };
-        const cleanup = () => ['click','scroll','keydown','touchstart'].forEach(ev => document.removeEventListener(ev, start));
-        ['click','scroll','keydown','touchstart'].forEach(ev => document.addEventListener(ev, start, { once: true }));
-      });
+      a.play().then(() => {
+        EVENTS.forEach(ev => document.removeEventListener(ev, startMusic));
+      }).catch(() => { /* blocked — will retry on next interaction */ });
+    }
+    window.addEventListener('load', () => {
+      startMusic(); // try immediate autoplay
+      EVENTS.forEach(ev => document.addEventListener(ev, startMusic)); // retry until it succeeds
     });
 
     document.addEventListener('keydown', e => { if(e.key === 'Escape'){ closeModal(); closeCart(); closeCheckout(); closeEvent(); } });
