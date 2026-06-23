@@ -499,19 +499,20 @@
   <script>
     const APPAREL = ['XS','S','M','L','XL','XXL'];
     const ONE = ['One size'];
-    // Drop matching images into assets/ (see assets/README.md) and they appear automatically.
+    const OBSIDIAN = 'linear-gradient(135deg,#0b1d24,#0e5f63,#c9a24b)';
+    const GLACIER  = 'linear-gradient(135deg,#15406b,#e8eef0,#1aa0a0)';
     const PRODUCTS = [
-      { id:'cap-white',    name:'Trucker Cap — White/Green',        price:350, badge:'Bestseller', img:'assets/cap-white.jpg',    grad:'linear-gradient(135deg,#0f7a3d,#14964b)', label:'TRUCKER CAP', sizes:ONE, desc:'Breathable mesh-back trucker cap with the Southern Leyte provincial ultramarathon crest.' },
-      { id:'tee-obsidian', name:'Performance Tee — Obsidian Marble', price:650, badge:'New',        img:'assets/tee-obsidian.jpg', grad:'linear-gradient(135deg,#0b1d24,#0e5f63,#c9a24b)', label:'PERFORMANCE TEE', sizes:APPAREL, desc:'Full-sublimation dri-fit tee in obsidian + gold marble. #MoveOnWithDocNico back print.' },
-      { id:'tee-glacier',  name:'Performance Tee — Glacier Marble',  price:650, badge:'',           img:'assets/tee-glacier.jpg',  grad:'linear-gradient(135deg,#15406b,#e8eef0,#1aa0a0)', label:'PERFORMANCE TEE', sizes:APPAREL, desc:'Full-sublimation dri-fit tee in glacier blue + white marble with gold veining.' },
-      { id:'tote-emerald', name:'Event Tote Bag — Emerald',          price:250, badge:'',           img:'assets/tote-emerald.jpg', grad:'linear-gradient(135deg,#0a5a2c,#0f7a3d)', label:'TOTE BAG', sizes:ONE, desc:'Sturdy canvas tote with the emerald event banner. Perfect race-kit carry-all.' },
-      { id:'singlet-dark', name:'Running Singlet — Obsidian',        price:550, badge:'No collar',  img:'assets/singlet-dark.jpg', grad:'linear-gradient(135deg,#0b1d24,#0e5f63,#c9a24b)', label:'RUNNING SINGLET', sizes:APPAREL, desc:'Lightweight no-collar running singlet in obsidian marble. Built for distance.' },
-      { id:'cap-green',    name:'Trucker Cap — Full Green',          price:350, badge:'',           img:'assets/cap-green.jpg',    grad:'linear-gradient(135deg,#0a5a2c,#0f7a3d)', label:'TRUCKER CAP', sizes:ONE, desc:'Bold full-green trucker cap with outlined provincial ultramarathon crest.' },
-      { id:'singlet-light',name:'Running Singlet — Glacier',         price:550, badge:'',           img:'assets/singlet-light.jpg',grad:'linear-gradient(135deg,#15406b,#e8eef0,#1aa0a0)', label:'RUNNING SINGLET', sizes:APPAREL, desc:'Breathable glacier-marble singlet with white trim. Cool, light, fast.' },
-      { id:'croptop',      name:'Running Crop Top — Glacier (Unisex)', price:300, badge:'New',       img:'assets/croptop.jpg',      grad:'linear-gradient(135deg,#15406b,#e8eef0,#1aa0a0)', label:'RUNNING CROP TOP', sizes:APPAREL, desc:'Unisex sublimated running crop top in glacier marble. Lightweight, breathable. #MoveOnWithDocNico.' },
-      { id:'arm-sleeves',  name:'Arm Sleeves — Marble',              price:300, badge:'',           img:'assets/arm-sleeves.jpg',  grad:'linear-gradient(135deg,#0b1d24,#e8eef0,#c9a24b)', label:'ARM SLEEVES', sizes:['S/M','L/XL'], desc:'UV-protective compression arm sleeves in marble print. Sold as a pair.' },
-      { id:'buff',         name:'Neck Gaiter / Buff — Marble',       price:200, badge:'',           img:'assets/buff.jpg',         grad:'linear-gradient(135deg,#15406b,#e8eef0,#1aa0a0)', label:'NECK GAITER', sizes:ONE, desc:'Multi-way seamless buff in teal + gold marble. Sun, sweat and dust shield.' },
-      { id:'tote-sage',    name:'Heritage Tote Bag — Sage',          price:250, badge:'',           img:'assets/tote-sage.jpg',    grad:'linear-gradient(135deg,#cfe3cd,#0f7a3d)', label:'TOTE BAG', sizes:ONE, desc:'Canvas tote with the sage heritage crest and Southern Leyte landscape.' },
+      { id:'singlet-obsidian', name:'Obsidian Running Singlet',          price:299, badge:'No collar', grad:OBSIDIAN, label:'RUNNING SINGLET', sizes:APPAREL, desc:'Lightweight no-collar running singlet in obsidian marble.' },
+      { id:'singlet-glacier',  name:'Glacier Running Singlet',           price:299, badge:'',          grad:GLACIER,  label:'RUNNING SINGLET', sizes:APPAREL, desc:'Breathable running singlet in glacier marble with white trim.' },
+      { id:'tee-obsidian',     name:'Obsidian Running Tee',              price:399, badge:'',          grad:OBSIDIAN, label:'RUNNING TEE',     sizes:APPAREL, desc:'Full-sublimation dri-fit running tee in obsidian marble.' },
+      { id:'tee-glacier',      name:'Glacier Running Tee',               price:399, badge:'',          grad:GLACIER,  label:'RUNNING TEE',     sizes:APPAREL, desc:'Full-sublimation dri-fit running tee in glacier marble.' },
+      { id:'cap-green',        name:'Full Green Trucker Cap',            price:199, badge:'',          grad:'linear-gradient(135deg,#0a5a2c,#0f7a3d)', label:'TRUCKER CAP', sizes:ONE, desc:'Bold full-green trucker cap with the provincial ultramarathon crest.' },
+      { id:'cap-white',        name:'Green & White Trucker Cap',         price:199, badge:'Bestseller', grad:'linear-gradient(135deg,#0f7a3d,#bfe3cd)', label:'TRUCKER CAP', sizes:ONE, desc:'White-front mesh trucker cap with the green ultramarathon crest.' },
+      { id:'croptop',          name:'Glacier Running Crop Top (Unisex)', price:249, badge:'New',       grad:GLACIER,  label:'RUNNING CROP TOP', sizes:APPAREL, desc:'Unisex sublimated running crop top in glacier marble.' },
+      { id:'buff',             name:'Glacier Neck Gaiter',               price:199, badge:'',          grad:GLACIER,  label:'NECK GAITER',     sizes:ONE, desc:'Multi-way seamless neck gaiter in glacier marble.' },
+      { id:'arm-sleeves',      name:'Glacier Arm Sleeves',               price:249, badge:'',          grad:GLACIER,  label:'ARM SLEEVES',     sizes:['S/M','L/XL'], desc:'UV-protective compression arm sleeves in glacier marble. Sold as a pair.' },
+      { id:'tote-a',           name:'Tote Bag — Design A',               price:199, badge:'',          grad:'linear-gradient(135deg,#0a5a2c,#0f7a3d)', label:'TOTE BAG', sizes:ONE, desc:'Sturdy canvas tote with the emerald event design.' },
+      { id:'tote-b',           name:'Tote Bag — Design B',               price:199, badge:'',          grad:'linear-gradient(135deg,#cfe3cd,#0f7a3d)', label:'TOTE BAG', sizes:ONE, desc:'Canvas tote with the sage heritage crest design.' },
     ];
 
     const peso = n => '₱' + n.toLocaleString();
@@ -528,7 +529,6 @@
         <div class="thumb">
           ${p.badge ? `<span class="badge">${p.badge}</span>` : ''}
           <div class="ph" style="background:${p.grad}">${p.label}</div>
-          <img src="${p.img}" alt="${p.name}" onload="this.style.opacity=1" style="opacity:0;position:relative;z-index:1" onerror="this.remove()" />
           <div class="quick">Quick view</div>
         </div>
         <div class="body">
@@ -558,7 +558,6 @@
         <button class="m-close" onclick="closeModal()">×</button>
         <div class="m-img">
           <div class="ph" style="background:${p.grad}">${p.label}</div>
-          <img src="${p.img}" alt="${p.name}" onload="this.style.opacity=1" style="opacity:0;position:relative;z-index:1" onerror="this.remove()" />
         </div>
         <div class="m-body">
           <div class="m-name">${p.name}</div>
@@ -628,7 +627,7 @@
         const it = cart[k], p = find(it.id);
         total += p.price * it.qty;
         return `<div class="line">
-          <div class="lthumb" style="background-image:url('${p.img}'), ${p.grad}"></div>
+          <div class="lthumb" style="background:${p.grad}"></div>
           <div class="linfo">
             <div class="lname">${p.name}</div>
             <div class="lsize">Size: ${it.size}</div>
