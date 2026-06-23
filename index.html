@@ -93,6 +93,14 @@
     }
     .hero h1 { font-size: 46px; letter-spacing: 0.5px; line-height: 1.05; }
     .hero p { margin-top: 14px; opacity: 0.94; font-size: 17px; }
+    .tagline { position: relative; display: inline-block; cursor: pointer; }
+    .sticker-pop {
+      position: absolute; left: 50%; bottom: 100%; margin-bottom: 8px;
+      transform: translate(-50%, 36px); opacity: 0; pointer-events: none;
+      transition: transform .32s cubic-bezier(.2,.8,.3,1.2), opacity .25s ease; z-index: 6;
+    }
+    .sticker-pop img { width: 150px; height: auto; display: block; filter: drop-shadow(0 10px 24px rgba(0,0,0,.35)); }
+    .tagline:hover .sticker-pop, .tagline:focus .sticker-pop, .tagline:active .sticker-pop { opacity: 1; transform: translate(-50%, 0); }
     .hero .cta {
       display: inline-block; margin-top: 26px; background: #fff; color: var(--green-d);
       font-weight: 800; padding: 13px 28px; border-radius: 999px; font-size: 15px;
@@ -342,6 +350,9 @@
 
     @media (max-width: 680px) {
       .hero h1 { font-size: 32px; }
+      .hero { min-height: calc(100vh - 60px); min-height: calc(100svh - 60px); display: flex; align-items: center; justify-content: center; padding: 40px 22px; }
+      .hero-inner { width: 100%; }
+      .sticker-pop img { width: 120px; }
       .modal { grid-template-columns: 1fr; max-height: 92vh; }
       .modal .m-img { aspect-ratio: 16/10; }
       .nav-link { display: none; }
@@ -375,7 +386,7 @@
     <div class="hero-inner">
       <span class="pill">Southern Leyte Pagmugna Ultramarathon · Parody Store</span>
       <h1>PAGMOVE-ON MERCH</h1>
-      <p>by Doc Nico — gear up and #MoveOnWithDocNico</p>
+      <p class="tagline" tabindex="0"><span class="sticker-pop"><img src="assets/sticker.png" alt="Doc Nico" /></span>by Doc Nico — gear up and #MoveOnWithDocNico</p>
       <a class="cta" href="#shop">Shop the collection ↓</a>
       <div>
         <button class="music-btn" id="musicBtn" onclick="toggleSong()">
