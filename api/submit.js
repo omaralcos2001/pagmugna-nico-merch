@@ -13,11 +13,14 @@ export default async function handler(req, res) {
   }
 
   const b = typeof req.body === 'string' ? safeParse(req.body) : (req.body || {});
-  const { name, contact, address, email, items = [], total = 0, pdfBase64, proof } = b;
+  const { name, contact, email, items = [], total = 0, pdfBase64, proof } = b;
   const STORE = (b.store && String(b.store).trim()) || 'PAGMOVE-ON MERCH';
+  const method = (b.method && String(b.method).trim()) || '';
+  const location = (b.location && String(b.location).trim()) || '';
+  const fulfillment = (b.fulfillment && String(b.fulfillment).trim()) || b.address || method || '—';
 
-  if (!name || !contact || !address || !email) {
-    return res.status(400).json({ error: 'Missing name, contact, email or address.' });
+  if (!name || !contact || !email || !method) {
+    return res.status(400).json({ error: 'Missing name, contact, email or fulfillment method.' });
   }
   if (!pdfBase64) {
     return res.status(400).json({ error: 'Missing order summary.' });
@@ -53,7 +56,7 @@ export default async function handler(req, res) {
         <b>Name:</b> ${esc(name)}<br/>
         <b>Contact:</b> ${esc(contact)}<br/>
         <b>Email:</b> ${esc(email)}<br/>
-        <b>Address:</b> ${esc(address)}
+        <b>Fulfillment:</b> ${esc(method)}${location ? ' — ' + esc(location) : ''}
       </p>
       <h3>Items</h3>
       <ul>${itemsHtml}</ul>
@@ -74,7 +77,7 @@ export default async function handler(req, res) {
       <h3>Your order</h3>
       <ul>${itemsHtml}</ul>
       <p><b>Total: ₱${totalStr}</b></p>
-      <p><b>Deliver to:</b> ${esc(address)}</p>
+      <p><b>Fulfillment:</b> ${esc(fulfillment)}</p>
       <p>A copy of your order summary is attached.</p>
       <p style="color:#5d7568;font-size:13px">${STORE}</p>`,
     attachments: [{ filename: 'order.pdf', content: Buffer.from(pdfBase64, 'base64') }],

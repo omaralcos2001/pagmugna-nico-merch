@@ -315,11 +315,11 @@
     .co-row.co-total { border-top: 1px dashed var(--border); margin-top: 6px; padding-top: 10px; font-weight: 800; font-size: 16px; color: var(--green); }
     .co-fields { display: flex; flex-direction: column; gap: 6px; margin-bottom: 22px; }
     .co-fields label { font-size: 12.5px; font-weight: 700; color: var(--ink); margin-top: 8px; }
-    .co-fields input, .co-fields textarea {
+    .co-fields input, .co-fields textarea, .co-fields select {
       width: 100%; border: 1.5px solid var(--border); border-radius: 10px; padding: 11px 13px;
-      font-size: 14px; font-family: inherit; background: #fff;
+      font-size: 14px; font-family: inherit; background: #fff; color: var(--ink);
     }
-    .co-fields input:focus, .co-fields textarea:focus { outline: none; border-color: var(--green-l); }
+    .co-fields input:focus, .co-fields textarea:focus, .co-fields select:focus { outline: none; border-color: var(--green-l); }
     .co-fields textarea { min-height: 60px; resize: vertical; }
     .co-pay .m-label { margin-top: 6px; }
     .co-hint { font-size: 12.5px; color: var(--muted); margin: 4px 0 12px; }
@@ -506,8 +506,18 @@
           <input id="coContact" type="tel" autocomplete="tel" />
           <label for="coEmail">Email *</label>
           <input id="coEmail" type="email" autocomplete="email" />
-          <label for="coAddress">Complete delivery address *</label>
-          <textarea id="coAddress" autocomplete="street-address"></textarea>
+          <label for="coMethod">How do you want to get it? *</label>
+          <select id="coMethod" onchange="onMethodChange()">
+            <option value="" disabled selected>Choose an option</option>
+            <option value="Pickup">Pickup</option>
+            <option value="Delivery within Ormoc">Delivery within Ormoc</option>
+            <option value="Delivery outside Ormoc">Delivery outside Ormoc</option>
+            <option value="Meet-up at common running venue">Meet-up at common running venue</option>
+          </select>
+          <div id="coWhereWrap" style="display:none; flex-direction:column; gap:6px;">
+            <label id="coWhereLabel" for="coAddress">Where?</label>
+            <textarea id="coAddress" autocomplete="street-address"></textarea>
+          </div>
         </div>
 
         <div class="m-label">1 · Pay via GCash / bank</div>
@@ -710,6 +720,9 @@
       document.getElementById('coPreview').innerHTML = '';
       document.getElementById('coWarn').textContent = '';
       document.getElementById('coProof').value = '';
+      document.getElementById('coMethod').value = '';
+      document.getElementById('coAddress').value = '';
+      document.getElementById('coWhereWrap').style.display = 'none';
       let total = 0;
       const rows = Object.values(cart).map(it=>{
         const p = find(it.id); total += p.price*it.qty;
@@ -760,7 +773,7 @@
       const { jsPDF } = window.jspdf;
       const doc = new jsPDF();
       doc.setFontSize(18); doc.setFont(undefined,'bold');
-      doc.text('PAGMOVE-ON MERCH — Order', 14, 20);
+      doc.text(STORE + ' — Order', 14, 20);
       doc.setFont(undefined,'normal'); doc.setFontSize(11);
       let y = 32;
       const line = t => { doc.text(t, 14, y); y += 7; };
@@ -768,7 +781,7 @@
       line('Name: ' + buyer.name);
       line('Contact: ' + buyer.contact);
       line('Email: ' + (buyer.email || '—'));
-      const addr = doc.splitTextToSize('Address: ' + buyer.address, 182);
+      const addr = doc.splitTextToSize('Fulfillment: ' + buyer.fulfillment, 182);
       doc.text(addr, 14, y); y += addr.length*7 + 4;
       doc.setFont(undefined,'bold'); line('Items:'); doc.setFont(undefined,'normal');
       items.forEach(i => line(`  • ${i.name} (${i.size}) x${i.qty} — ${peso(i.price*i.qty)}`));
@@ -785,23 +798,41 @@
       return doc.output('datauristring').split(',')[1]; // base64
     }
 
+    function onMethodChange(){
+      const m = document.getElementById('coMethod').value;
+      const wrap = document.getElementById('coWhereWrap');
+      const label = document.getElementById('coWhereLabel');
+      const labels = {
+        'Delivery within Ormoc': 'Delivery address (within Ormoc) *',
+        'Delivery outside Ormoc': 'Delivery address (outside Ormoc) *',
+        'Meet-up at common running venue': 'Which running venue? *'
+      };
+      if (m && m !== 'Pickup'){ wrap.style.display = 'flex'; label.textContent = labels[m]; }
+      else { wrap.style.display = 'none'; }
+    }
+
     async function submitOrder(){
-      const name = val('coName'), contact = val('coContact'), email = val('coEmail'), address = val('coAddress');
+      const name = val('coName'), contact = val('coContact'), email = val('coEmail');
+      const method = val('coMethod'), where = val('coAddress');
       const warn = document.getElementById('coWarn');
-      if(!name || !contact || !email || !address){ warn.textContent = 'Please fill in your name, contact, email and address.'; return; }
+      if(!name || !contact || !email){ warn.textContent = 'Please fill in your name, contact and email.'; return; }
       if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ warn.textContent = 'Please enter a valid email address.'; return; }
+      if(!method){ warn.textContent = 'Please choose how you want to get your order.'; return; }
+      const needsWhere = method !== 'Pickup';
+      if(needsWhere && !where){ warn.textContent = 'Please enter the location for your order.'; return; }
       if(!proofData){ warn.textContent = 'Please upload your proof of payment.'; return; }
+      const fulfillment = needsWhere ? `${method} — ${where}` : method;
 
       const btn = document.getElementById('coSubmit');
       btn.disabled = true; btn.textContent = 'Submitting…'; warn.textContent = '';
       try {
         const items = Object.values(cart).map(it => ({ name: find(it.id).name, size: it.size, qty: it.qty, price: find(it.id).price }));
         const total = items.reduce((s,i)=>s+i.price*i.qty, 0);
-        const pdfBase64 = buildPdf({ name, contact, email, address }, items, total);
+        const pdfBase64 = buildPdf({ name, contact, email, fulfillment }, items, total);
         const res = await fetch('/api/submit', {
           method: 'POST', headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            store: STORE, name, contact, email, address, items, total,
+            store: STORE, name, contact, email, method, location: where, fulfillment, items, total,
             pdfBase64,
             proof: { filename: 'proof.jpg', base64: proofData.dataUrl.split(',')[1] }
           })
