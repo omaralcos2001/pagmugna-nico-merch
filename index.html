@@ -553,6 +553,7 @@
       { id:'tote-b',           name:'Tote Bag — Design B',               price:199, badge:'',          grad:'linear-gradient(135deg,#cfe3cd,#0f7a3d)', label:'TOTE BAG', sizes:ONE, desc:'Canvas tote with the sage heritage crest design.' },
     ];
 
+    const STORE = 'PAGMOVE-ON MERCH';
     const peso = n => '₱' + n.toLocaleString();
     const find = id => PRODUCTS.find(p => p.id === id);
     const cart = {}; // key "id::size" -> {id, size, qty}
@@ -800,7 +801,7 @@
         const res = await fetch('/api/submit', {
           method: 'POST', headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            name, contact, email, address, items, total,
+            store: STORE, name, contact, email, address, items, total,
             pdfBase64,
             proof: { filename: 'proof.jpg', base64: proofData.dataUrl.split(',')[1] }
           })

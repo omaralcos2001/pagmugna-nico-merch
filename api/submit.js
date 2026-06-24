@@ -14,6 +14,7 @@ export default async function handler(req, res) {
 
   const b = typeof req.body === 'string' ? safeParse(req.body) : (req.body || {});
   const { name, contact, address, email, items = [], total = 0, pdfBase64, proof } = b;
+  const STORE = (b.store && String(b.store).trim()) || 'PAGMOVE-ON MERCH';
 
   if (!name || !contact || !address || !email) {
     return res.status(400).json({ error: 'Missing name, contact, email or address.' });
@@ -37,7 +38,7 @@ export default async function handler(req, res) {
     attachments.push({ filename: proof.filename || 'proof.jpg', content: Buffer.from(proof.base64, 'base64') });
   }
 
-  const FROM = 'PAGMOVE-ON MERCH <onboarding@resend.dev>';
+  const FROM = `${STORE} <onboarding@resend.dev>`;
   const totalStr = Number(total).toLocaleString();
 
   // Email 1 — to the store owner (full details + attachments)
@@ -45,9 +46,9 @@ export default async function handler(req, res) {
     from: FROM,
     to: [to],
     replyTo: email,
-    subject: `New order — ${name} (₱${totalStr})`,
+    subject: `New ${STORE} order — ${name} (₱${totalStr})`,
     html: `
-      <h2>New PAGMOVE-ON MERCH order</h2>
+      <h2>New ${STORE} order</h2>
       <p>
         <b>Name:</b> ${esc(name)}<br/>
         <b>Contact:</b> ${esc(contact)}<br/>
@@ -66,7 +67,7 @@ export default async function handler(req, res) {
     from: FROM,
     to: [email],
     replyTo: to,
-    subject: `We received your PAGMOVE-ON MERCH order, ${name}!`,
+    subject: `We received your ${STORE} order, ${name}!`,
     html: `
       <h2>Salamat, ${esc(name)}! 🎉</h2>
       <p>We’ve received your order and your payment proof. We’ll confirm and arrange delivery shortly.</p>
@@ -75,7 +76,7 @@ export default async function handler(req, res) {
       <p><b>Total: ₱${totalStr}</b></p>
       <p><b>Deliver to:</b> ${esc(address)}</p>
       <p>A copy of your order summary is attached.</p>
-      <p style="color:#5d7568;font-size:13px">PAGMOVE-ON MERCH by Doc Nico · #MoveOnWithDocNico</p>`,
+      <p style="color:#5d7568;font-size:13px">${STORE}</p>`,
     attachments: [{ filename: 'order.pdf', content: Buffer.from(pdfBase64, 'base64') }],
   };
 
