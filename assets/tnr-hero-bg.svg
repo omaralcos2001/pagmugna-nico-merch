@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 620" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="tnrsky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fff3e0"/>
+      <stop offset="1" stop-color="#ffd8a8"/>
+    </linearGradient>
+    <clipPath id="pbody"><ellipse cx="90" cy="132" rx="40" ry="56"/></clipPath>
+    <pattern id="pine" width="180" height="230" patternUnits="userSpaceOnUse">
+      <!-- crown -->
+      <g transform="translate(90,46)" fill="#2f9e44">
+        <path d="M0,34 C-7,2 -22,-6 -34,-2 C-24,10 -12,24 0,34 Z"/>
+        <path d="M0,34 C7,2 22,-6 34,-2 C24,10 12,24 0,34 Z"/>
+        <path d="M0,38 C-4,0 -2,-26 5,-34 C11,-20 9,12 0,38 Z"/>
+        <path d="M0,34 C4,0 2,-22 -5,-30 C-11,-16 -9,12 0,34 Z" opacity=".88"/>
+      </g>
+      <!-- body -->
+      <ellipse cx="90" cy="132" rx="40" ry="56" fill="#f59f00"/>
+      <g clip-path="url(#pbody)" stroke="#d9480f" stroke-width="3" opacity=".5" fill="none">
+        <path d="M40,70 L140,170 M40,110 L140,210 M40,150 L140,250 M40,30 L140,130
+                 M140,70 L40,170 M140,110 L40,210 M140,150 L40,250 M140,30 L40,130"/>
+      </g>
+      <ellipse cx="90" cy="132" rx="40" ry="56" fill="none" stroke="#e8590c" stroke-width="3" opacity=".5"/>
+    </pattern>
+  </defs>
+  <rect width="1440" height="620" fill="url(#tnrsky)"/>
+  <!-- sun -->
+  <circle cx="1180" cy="140" r="80" fill="#ffffff" opacity="0.55"/>
+  <rect width="1440" height="620" fill="url(#pine)" opacity="0.55"/>
+</svg>

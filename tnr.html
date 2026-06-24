@@ -6,16 +6,16 @@
   <title>TNR Merch</title>
   <style>
     :root {
-      --green: #e83e8c;
-      --green-d: #c2255c;
-      --green-l: #f06595;
-      --green-bright: #f783ac;
-      --mint: #ffe3f0;
-      --mint-2: #fff4f9;
-      --ink: #3a1426;
-      --muted: #a3697f;
+      --green: #e8590c;
+      --green-d: #c2410c;
+      --green-l: #f76707;
+      --green-bright: #ff922b;
+      --mint: #fff0e0;
+      --mint-2: #fff8f0;
+      --ink: #3a1f08;
+      --muted: #a3744f;
       --white: #ffffff;
-      --border: #f5d3e2;
+      --border: #f5dcc0;
       --shadow: 0 14px 40px rgba(15,122,61,0.16);
       --shadow-sm: 0 4px 14px rgba(15,122,61,0.08);
     }
@@ -75,8 +75,8 @@
       position: relative; overflow: hidden;
       background-color: var(--green-d);
       background-image:
-        linear-gradient(135deg, rgba(194,37,92,.78) 0%, rgba(232,62,140,.62) 50%, rgba(247,131,172,.62) 100%),
-        url('assets/hero-bg.svg');
+        linear-gradient(135deg, rgba(194,65,12,.70) 0%, rgba(232,89,12,.52) 50%, rgba(255,146,43,.52) 100%),
+        url('assets/tnr-hero-bg.svg');
       background-size: cover; background-position: center bottom;
       color: #fff; text-align: center; padding: 72px 24px 80px;
     }
@@ -383,12 +383,13 @@
         </div>
         <div class="txt">
           <b>TNR MERCH</b>
-          <span>by Doc Nico</span>
+          <span>Thursday Night Runners</span>
         </div>
       </a>
       <div class="nav-actions">
         <div class="nav-links" id="navLinks">
           <a class="nav-link" href="#shop" onclick="closeMenu()">Shop</a>
+          <a class="nav-link" href="#event" onclick="openEvent(event); closeMenu()">Event</a>
           <a class="nav-link" href="index.html">PAGMOVE-ON</a>
         </div>
         <button class="cart-btn" onclick="openCart()">
@@ -401,18 +402,18 @@
 
   <section class="hero" id="top">
     <div class="hero-inner">
-      <span class="pill">TNR Merch · Store</span>
+      <span class="pill">Thursday Night Runners · Ormoc City</span>
       <h1>TNR MERCH</h1>
-      <p><span class="tagline" tabindex="0"><span class="sticker-pop"><img src="assets/sticker.png" alt="Doc Nico" /></span>Coming soon — new drops on the way</span></p>
+      <p><span class="tagline" tabindex="0"><span class="sticker-pop"><img src="assets/sticker.png" alt="Doc Nico" /></span>Run with us every Thursday night — Ormoc City</span></p>
       <a class="cta" href="#shop">Shop the collection ↓</a>
       <div>
         <button class="music-btn" id="musicBtn" onclick="toggleSong()">
           <span class="eq"><i></i><i></i><i></i></span>
-          <span id="musicLabel">🎵 Click this kung gusto ka MAGMAOY</span>
+          <span id="musicLabel">🎵 Click this kung gusto k ug LIPAY</span>
         </button>
       </div>
     </div>
-    <audio id="bgSong" src="assets/paubaya.mp3" loop preload="auto"></audio>
+    <audio id="bgSong" src="assets/kahelnalanget.mp3" loop preload="auto"></audio>
   </section>
 
 
@@ -422,16 +423,15 @@
       <p class="section-sub">Tap any item to choose your size and add it to your cart.</p>
     </div>
     <div class="grid" id="grid"></div>
-    <p id="comingSoon" style="text-align:center;color:var(--muted);padding:60px 0;font-size:17px">🛍️ Products coming soon — check back soon!</p>
   </main>
 
   <footer>
     <div class="foot-grid">
       <div class="foot-brand">
         <b>TNR MERCH</b>
-        <p>Unofficial merchandise of the Southern Leyte Pagmugna Provincial Ultramarathon. Gear up and #MoveOnWithDocNico.</p>
+        <p>Official merch of Thursday Night Runners — a running community in Ormoc City.</p>
         <div class="socials">
-          <a href="https://web.facebook.com/coy.en.581" target="_blank" rel="noopener" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M22 12a10 10 0 10-11.5 9.9v-7H8v-3h2.5V9.5A3.5 3.5 0 0114 6h2.5v3H15a1 1 0 00-1 1v2h2.5l-.5 3H14v7A10 10 0 0022 12z"/></svg></a>
+          <a href="https://web.facebook.com/profile.php?id=61556332447686" target="_blank" rel="noopener" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M22 12a10 10 0 10-11.5 9.9v-7H8v-3h2.5V9.5A3.5 3.5 0 0114 6h2.5v3H15a1 1 0 00-1 1v2h2.5l-.5 3H14v7A10 10 0 0022 12z"/></svg></a>
           <a href="https://www.instagram.com/dok.coy/" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.6 0 4.9.07 1.2.06 1.8.25 2.2.42.6.22 1 .48 1.4.9.43.42.7.82.92 1.4.17.46.36 1.06.42 2.26.06 1.28.07 1.66.07 4.88s0 3.6-.07 4.88c-.06 1.2-.25 1.8-.42 2.26-.22.58-.49.98-.92 1.4-.42.42-.82.68-1.4.9-.46.17-1.06.36-2.26.42-1.28.06-1.66.07-4.88.07s-3.6 0-4.88-.07c-1.2-.06-1.8-.25-2.26-.42a3.9 3.9 0 01-1.4-.9 3.9 3.9 0 01-.9-1.4c-.17-.46-.36-1.06-.42-2.26C2.2 15.6 2.2 15.2 2.2 12s0-3.6.07-4.88c.06-1.2.25-1.8.42-2.26.22-.58.48-.98.9-1.4.42-.42.82-.68 1.4-.9.46-.17 1.06-.36 2.26-.42C8.4 2.2 8.8 2.2 12 2.2zm0 1.8c-3.15 0-3.5 0-4.75.07-.9.04-1.4.2-1.72.32-.43.17-.74.37-1.06.69-.32.32-.52.63-.69 1.06-.12.32-.28.82-.32 1.72C3.4 8.5 3.4 8.85 3.4 12s0 3.5.07 4.75c.04.9.2 1.4.32 1.72.17.43.37.74.69 1.06.32.32.63.52 1.06.69.32.12.82.28 1.72.32 1.25.07 1.6.07 4.75.07s3.5 0 4.75-.07c.9-.04 1.4-.2 1.72-.32.43-.17.74-.37 1.06-.69.32-.32.52-.63.69-1.06.12-.32.28-.82.32-1.72.07-1.25.07-1.6.07-4.75s0-3.5-.07-4.75c-.04-.9-.2-1.4-.32-1.72a2.1 2.1 0 00-.69-1.06 2.1 2.1 0 00-1.06-.69c-.32-.12-.82-.28-1.72-.32C15.5 4 15.15 4 12 4zm0 3.06A4.94 4.94 0 1112 17a4.94 4.94 0 010-9.88zm0 1.8a3.14 3.14 0 100 6.28 3.14 3.14 0 000-6.28zM17.34 6a1.15 1.15 0 110 2.3 1.15 1.15 0 010-2.3z"/></svg></a>
         </div>
       </div>
@@ -441,7 +441,7 @@
         <span>coy.nunez19@gmail.com</span>
       </div>
     </div>
-    <div class="foot-bottom">© 2026 TNR MERCH by Doc Nico. All rights reserved. Site by <a href="https://web.facebook.com/profile.php?id=61583154564932" target="_blank" rel="noopener" style="color:#fff;text-decoration:underline">Omar Alcos</a>.</div>
+    <div class="foot-bottom">© 2026 TNR MERCH — Thursday Night Runners. All rights reserved. Site by <a href="https://web.facebook.com/profile.php?id=61583154564932" target="_blank" rel="noopener" style="color:#fff;text-decoration:underline">Omar Alcos</a>.</div>
   </footer>
 
   <!-- Quick view modal -->
@@ -465,12 +465,12 @@
   <div class="modal-overlay" id="eventOverlay" onclick="if(event.target===this) closeEvent()">
     <div class="event-modal">
       <button class="m-close" onclick="closeEvent()">×</button>
-      <h3 class="ev-title">Southern Leyte Pagmugna Ultramarathon</h3>
-      <p class="ev-sub">June 28, 2026 · Capitol Sunken Garden, Maasin City</p>
-      <p>From the heat and grind of <strong>Maasin City</strong>’s streets, pushing through the long, unforgiving stretches of <strong>Macrohon</strong>, then battling the exposed coastal winds of <strong>Padre Burgos</strong>—this route will wear you down before it builds you back up.</p>
-      <p>No shortcuts. No comfort. Just you, the distance, and the discipline to keep moving when everything in you says stop.</p>
-      <p class="ev-tag"><strong>Pagmugna</strong>—because every finisher is forged, not given.</p>
-      <a class="ev-link" href="https://web.facebook.com/profile.php?id=61570695086357" target="_blank" rel="noopener">For more info, visit our Facebook page →</a>
+      <h3 class="ev-title">Thursday Night Runners (TNR)</h3>
+      <p class="ev-sub">A running community · Ormoc City</p>
+      <p>TNR — Thursday Night Runners — is a running community based in <strong>Ormoc City</strong>. Every Thursday night we lace up together to chase good vibes, good company, and honest kilometers.</p>
+      <p>More than just a run, it's about lifting each other up — spreading positivity, welcoming beginners, and celebrating every step no matter the pace.</p>
+      <p class="ev-tag"><strong>Come run with us.</strong> Bring your shoes and your smile — everyone's welcome.</p>
+      <a class="ev-link" href="https://web.facebook.com/profile.php?id=61556332447686" target="_blank" rel="noopener">Follow TNR on Facebook →</a>
     </div>
   </div>
 
@@ -521,7 +521,16 @@
     const GLACIER  = 'linear-gradient(135deg,#15406b,#e8eef0,#1aa0a0)';
     const SINGLET_CHART = 'assets/singletsizing.jpeg';
     const TEE_CHART = 'assets/tshirtsizing.jpeg';
-    const PRODUCTS = [];
+    const PRODUCTS = [
+      { id:'tnr-blue-singlet',   name:'Blue Marble Singlet',   price:299, badge:'',    grad:'linear-gradient(135deg,#1864ab,#74c0fc)', label:'RUNNING SINGLET', sizes:APPAREL, sizeChart:SINGLET_CHART, desc:'Lightweight no-collar running singlet in blue marble.' },
+      { id:'tnr-pink-singlet',   name:'Pink Marble Singlet',   price:299, badge:'',    grad:'linear-gradient(135deg,#e64980,#faa2c1)', label:'RUNNING SINGLET', sizes:APPAREL, sizeChart:SINGLET_CHART, desc:'Lightweight no-collar running singlet in pink marble.' },
+      { id:'tnr-purple-singlet', name:'Purple Marble Singlet', price:299, badge:'',    grad:'linear-gradient(135deg,#6741d9,#b197fc)', label:'RUNNING SINGLET', sizes:APPAREL, sizeChart:SINGLET_CHART, desc:'Lightweight no-collar running singlet in purple marble.' },
+      { id:'tnr-yellow-singlet', name:'Yellow Marble Singlet', price:299, badge:'',    grad:'linear-gradient(135deg,#e8a90c,#ffe066)', label:'RUNNING SINGLET', sizes:APPAREL, sizeChart:SINGLET_CHART, desc:'Lightweight no-collar running singlet in yellow marble.' },
+      { id:'tnr-blue-tee',       name:'Blue Marble Tee',       price:399, badge:'New', grad:'linear-gradient(135deg,#1864ab,#74c0fc)', label:'RUNNING TEE', sizes:APPAREL, sizeChart:TEE_CHART, desc:'Full-sublimation dri-fit running tee in blue marble.' },
+      { id:'tnr-pink-tee',       name:'Pink Marble Tee',       price:399, badge:'',    grad:'linear-gradient(135deg,#e64980,#faa2c1)', label:'RUNNING TEE', sizes:APPAREL, sizeChart:TEE_CHART, desc:'Full-sublimation dri-fit running tee in pink marble.' },
+      { id:'tnr-purple-tee',     name:'Purple Marble Tee',     price:399, badge:'',    grad:'linear-gradient(135deg,#6741d9,#b197fc)', label:'RUNNING TEE', sizes:APPAREL, sizeChart:TEE_CHART, desc:'Full-sublimation dri-fit running tee in purple marble.' },
+      { id:'tnr-yellow-tee',     name:'Yellow Marble Tee',     price:399, badge:'',    grad:'linear-gradient(135deg,#e8a90c,#ffe066)', label:'RUNNING TEE', sizes:APPAREL, sizeChart:TEE_CHART, desc:'Full-sublimation dri-fit running tee in yellow marble.' },
+    ];
 
     const peso = n => '₱' + n.toLocaleString();
     const find = id => PRODUCTS.find(p => p.id === id);
@@ -819,8 +828,8 @@
     const AUTO = ['click','keydown','scroll','touchstart','pointerdown'];
     function syncMusicBtn(){
       const btn = document.getElementById('musicBtn'), label = document.getElementById('musicLabel');
-      if(bgSong.paused){ btn.classList.remove('playing'); label.textContent = '🎵 Click this kung gusto ka MAGMAOY'; }
-      else { btn.classList.add('playing'); label.textContent = 'Magmaoy ka lang… (i-pause)'; }
+      if(bgSong.paused){ btn.classList.remove('playing'); label.textContent = '🎵 Click this kung gusto k ug LIPAY'; }
+      else { btn.classList.add('playing'); label.textContent = 'Unta ug lipay gyud ka… (i-pause)'; }
     }
     function toggleSong(){ if(bgSong.paused) bgSong.play().catch(()=>{}); else bgSong.pause(); }
     function autostart(){ bgSong.play().catch(()=>{}); }
