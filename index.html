@@ -53,8 +53,10 @@
     .logo .txt b { display: block; font-size: 16px; letter-spacing: 0.4px; line-height: 1.1; }
     .logo .txt span { font-size: 11.5px; color: var(--muted); }
     .nav-actions { display: flex; align-items: center; gap: 18px; }
+    .nav-links { display: flex; align-items: center; gap: 18px; }
     .nav-link { font-size: 14px; font-weight: 600; color: var(--muted); transition: color .15s; }
     .nav-link:hover { color: var(--green); }
+    .hamburger { display: none; background: none; border: none; font-size: 26px; line-height: 1; cursor: pointer; color: var(--green); padding: 2px 6px; }
     .cart-btn {
       position: relative; background: var(--green); color: #fff;
       border: none; padding: 10px 18px; border-radius: 999px;
@@ -226,6 +228,10 @@
     }
     .size-opt:hover { border-color: var(--green-l); }
     .size-opt.sel { background: var(--green); color: #fff; border-color: var(--green); }
+    .size-guide { margin: -8px 0 20px; }
+    .size-guide summary { cursor: pointer; font-size: 13px; font-weight: 700; color: var(--green); list-style: none; }
+    .size-guide summary::-webkit-details-marker { display: none; }
+    .size-guide img { width: 100%; margin-top: 10px; border-radius: 10px; border: 1px solid var(--border); }
     .m-qty { display: flex; align-items: center; gap: 12px; margin-bottom: 22px; }
     .m-qty .stepper { display: flex; align-items: center; border: 1.5px solid var(--border); border-radius: 10px; overflow: hidden; }
     .m-qty .stepper button { width: 38px; height: 40px; border: none; background: var(--mint); font-size: 18px; font-weight: 700; cursor: pointer; color: var(--green-d); }
@@ -355,7 +361,15 @@
       .sticker-pop img { width: 120px; }
       .modal { grid-template-columns: 1fr; max-height: 92vh; }
       .modal .m-img { aspect-ratio: 16/10; }
-      .nav-link { display: none; }
+      .hamburger { display: grid; place-items: center; }
+      .nav-links {
+        position: absolute; top: 100%; left: 0; right: 0;
+        background: #fff; flex-direction: column; align-items: stretch; gap: 0;
+        padding: 4px 20px 12px; border-bottom: 1px solid var(--border);
+        box-shadow: 0 12px 24px rgba(0,0,0,.1); display: none;
+      }
+      .nav-links.open { display: flex; }
+      .nav-link { padding: 13px 2px; border-bottom: 1px solid var(--border); font-size: 15px; }
     }
   </style>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -373,12 +387,15 @@
         </div>
       </a>
       <div class="nav-actions">
-        <a class="nav-link" href="#shop">Shop</a>
-        <a class="nav-link" href="#event" onclick="openEvent(event)">Event</a>
-        <a class="nav-link" href="tnr.html">TNR Merch</a>
+        <div class="nav-links" id="navLinks">
+          <a class="nav-link" href="#shop" onclick="closeMenu()">Shop</a>
+          <a class="nav-link" href="#event" onclick="openEvent(event); closeMenu()">Event</a>
+          <a class="nav-link" href="tnr.html">TNR Merch</a>
+        </div>
         <button class="cart-btn" onclick="openCart()">
           🛒 Cart <span class="cart-count" id="cartCount">0</span>
         </button>
+        <button class="hamburger" id="hamburger" onclick="toggleMenu(event)" aria-label="Menu">☰</button>
       </div>
     </div>
   </header>
@@ -518,16 +535,20 @@
     const ONE = ['One size'];
     const OBSIDIAN = 'linear-gradient(135deg,#0b1d24,#0e5f63,#c9a24b)';
     const GLACIER  = 'linear-gradient(135deg,#15406b,#e8eef0,#1aa0a0)';
+    const SINGLET_CHART = 'assets/singletsizing.jpeg';
+    const TEE_CHART = 'assets/tshirtsizing.jpeg';
     const PRODUCTS = [
-      { id:'singlet-obsidian', name:'Obsidian Running Singlet',          price:299, badge:'No collar', grad:OBSIDIAN, label:'RUNNING SINGLET', sizes:APPAREL, desc:'Lightweight no-collar running singlet in obsidian marble.' },
-      { id:'singlet-glacier',  name:'Glacier Running Singlet',           price:299, badge:'',          grad:GLACIER,  label:'RUNNING SINGLET', sizes:APPAREL, desc:'Breathable running singlet in glacier marble with white trim.' },
-      { id:'tee-obsidian',     name:'Obsidian Running Tee',              price:399, badge:'',          grad:OBSIDIAN, label:'RUNNING TEE',     sizes:APPAREL, desc:'Full-sublimation dri-fit running tee in obsidian marble.' },
-      { id:'tee-glacier',      name:'Glacier Running Tee',               price:399, badge:'',          grad:GLACIER,  label:'RUNNING TEE',     sizes:APPAREL, desc:'Full-sublimation dri-fit running tee in glacier marble.' },
+      { id:'singlet-obsidian', name:'Obsidian Running Singlet',          price:299, badge:'No collar', grad:OBSIDIAN, label:'RUNNING SINGLET', sizes:APPAREL, sizeChart:SINGLET_CHART, desc:'Lightweight no-collar running singlet in obsidian marble.' },
+      { id:'singlet-glacier',  name:'Glacier Running Singlet',           price:299, badge:'',          grad:GLACIER,  label:'RUNNING SINGLET', sizes:APPAREL, sizeChart:SINGLET_CHART, desc:'Breathable running singlet in glacier marble with white trim.' },
+      { id:'tee-obsidian',     name:'Obsidian Running Tee',              price:399, badge:'',          grad:OBSIDIAN, label:'RUNNING TEE',     sizes:APPAREL, sizeChart:TEE_CHART, desc:'Full-sublimation dri-fit running tee in obsidian marble.' },
+      { id:'tee-glacier',      name:'Glacier Running Tee',               price:399, badge:'',          grad:GLACIER,  label:'RUNNING TEE',     sizes:APPAREL, sizeChart:TEE_CHART, desc:'Full-sublimation dri-fit running tee in glacier marble.' },
       { id:'cap-green',        name:'Full Green Trucker Cap',            price:199, badge:'',          grad:'linear-gradient(135deg,#0a5a2c,#0f7a3d)', label:'TRUCKER CAP', sizes:ONE, desc:'Bold full-green trucker cap with the provincial ultramarathon crest.' },
       { id:'cap-white',        name:'Green & White Trucker Cap',         price:199, badge:'Bestseller', grad:'linear-gradient(135deg,#0f7a3d,#bfe3cd)', label:'TRUCKER CAP', sizes:ONE, desc:'White-front mesh trucker cap with the green ultramarathon crest.' },
-      { id:'croptop',          name:'Glacier Running Crop Top (Unisex)', price:249, badge:'New',       grad:GLACIER,  label:'RUNNING CROP TOP', sizes:APPAREL, desc:'Unisex sublimated running crop top in glacier marble.' },
+      { id:'croptop',          name:'Glacier Running Crop Top (Unisex)', price:249, badge:'New',       grad:GLACIER,  label:'RUNNING CROP TOP', sizes:APPAREL, sizeChart:TEE_CHART, desc:'Unisex sublimated running crop top in glacier marble.' },
       { id:'buff',             name:'Glacier Neck Gaiter',               price:199, badge:'',          grad:GLACIER,  label:'NECK GAITER',     sizes:ONE, desc:'Multi-way seamless neck gaiter in glacier marble.' },
+      { id:'buff-obsidian',    name:'Obsidian Neck Gaiter',              price:199, badge:'',          grad:OBSIDIAN, label:'NECK GAITER',     sizes:ONE, desc:'Multi-way seamless neck gaiter in obsidian marble.' },
       { id:'arm-sleeves',      name:'Glacier Arm Sleeves',               price:249, badge:'',          grad:GLACIER,  label:'ARM SLEEVES',     sizes:['S/M','L/XL'], desc:'UV-protective compression arm sleeves in glacier marble. Sold as a pair.' },
+      { id:'arm-sleeves-obsidian', name:'Obsidian Arm Sleeves',          price:249, badge:'',          grad:OBSIDIAN, label:'ARM SLEEVES',     sizes:['S/M','L/XL'], desc:'UV-protective compression arm sleeves in obsidian marble. Sold as a pair.' },
       { id:'tote-a',           name:'Tote Bag — Design A',               price:199, badge:'',          grad:'linear-gradient(135deg,#0a5a2c,#0f7a3d)', label:'TOTE BAG', sizes:ONE, desc:'Sturdy canvas tote with the emerald event design.' },
       { id:'tote-b',           name:'Tote Bag — Design B',               price:199, badge:'',          grad:'linear-gradient(135deg,#cfe3cd,#0f7a3d)', label:'TOTE BAG', sizes:ONE, desc:'Canvas tote with the sage heritage crest design.' },
     ];
@@ -590,6 +611,7 @@
           <div class="sizes" id="sizes">
             ${p.sizes.map(s => `<button class="size-opt ${selSize===s?'sel':''}" onclick="pickSize('${s}')">${s}</button>`).join('')}
           </div>
+          ${p.sizeChart ? `<details class="size-guide"><summary>📏 View size chart</summary><img src="${p.sizeChart}" alt="Size chart" onerror="this.remove()"></details>` : ''}
           <div class="m-label">Quantity</div>
           <div class="m-qty">
             <div class="stepper">
@@ -805,6 +827,11 @@
       clearTimeout(toastTimer);
       toastTimer = setTimeout(()=>t.classList.remove('show'), 2400);
     }
+
+    // ---- Mobile menu ----
+    function toggleMenu(e){ if(e) e.stopPropagation(); const n = document.getElementById('navLinks'); if(n) n.classList.toggle('open'); }
+    function closeMenu(){ const n = document.getElementById('navLinks'); if(n) n.classList.remove('open'); }
+    document.addEventListener('click', closeMenu);
 
     // ---- Tagline sticker (tap to show, click anywhere to hide) ----
     const taglineEl = document.querySelector('.tagline');

@@ -6,16 +6,16 @@
   <title>TNR Merch</title>
   <style>
     :root {
-      --green: #0f7a3d;
-      --green-d: #0a5a2c;
-      --green-l: #14964b;
-      --green-bright: #1bb05c;
-      --mint: #eaf6ee;
-      --mint-2: #f4faf6;
-      --ink: #14241a;
-      --muted: #5d7568;
+      --green: #333333;
+      --green-d: #1a1a1a;
+      --green-l: #444444;
+      --green-bright: #555555;
+      --mint: #ededed;
+      --mint-2: #f6f6f6;
+      --ink: #161616;
+      --muted: #6b6b6b;
       --white: #ffffff;
-      --border: #d8e6dc;
+      --border: #dadada;
       --shadow: 0 14px 40px rgba(15,122,61,0.16);
       --shadow-sm: 0 4px 14px rgba(15,122,61,0.08);
     }
@@ -53,8 +53,10 @@
     .logo .txt b { display: block; font-size: 16px; letter-spacing: 0.4px; line-height: 1.1; }
     .logo .txt span { font-size: 11.5px; color: var(--muted); }
     .nav-actions { display: flex; align-items: center; gap: 18px; }
+    .nav-links { display: flex; align-items: center; gap: 18px; }
     .nav-link { font-size: 14px; font-weight: 600; color: var(--muted); transition: color .15s; }
     .nav-link:hover { color: var(--green); }
+    .hamburger { display: none; background: none; border: none; font-size: 26px; line-height: 1; cursor: pointer; color: var(--green); padding: 2px 6px; }
     .cart-btn {
       position: relative; background: var(--green); color: #fff;
       border: none; padding: 10px 18px; border-radius: 999px;
@@ -73,7 +75,7 @@
       position: relative; overflow: hidden;
       background-color: var(--green-d);
       background-image:
-        linear-gradient(135deg, rgba(10,90,44,.72) 0%, rgba(15,122,61,.60) 50%, rgba(27,176,92,.62) 100%),
+        linear-gradient(135deg, rgba(18,18,18,.86) 0%, rgba(40,40,40,.74) 50%, rgba(64,64,64,.76) 100%),
         url('assets/hero-bg.svg');
       background-size: cover; background-position: center bottom;
       color: #fff; text-align: center; padding: 72px 24px 80px;
@@ -226,6 +228,10 @@
     }
     .size-opt:hover { border-color: var(--green-l); }
     .size-opt.sel { background: var(--green); color: #fff; border-color: var(--green); }
+    .size-guide { margin: -8px 0 20px; }
+    .size-guide summary { cursor: pointer; font-size: 13px; font-weight: 700; color: var(--green); list-style: none; }
+    .size-guide summary::-webkit-details-marker { display: none; }
+    .size-guide img { width: 100%; margin-top: 10px; border-radius: 10px; border: 1px solid var(--border); }
     .m-qty { display: flex; align-items: center; gap: 12px; margin-bottom: 22px; }
     .m-qty .stepper { display: flex; align-items: center; border: 1.5px solid var(--border); border-radius: 10px; overflow: hidden; }
     .m-qty .stepper button { width: 38px; height: 40px; border: none; background: var(--mint); font-size: 18px; font-weight: 700; cursor: pointer; color: var(--green-d); }
@@ -355,7 +361,15 @@
       .sticker-pop img { width: 120px; }
       .modal { grid-template-columns: 1fr; max-height: 92vh; }
       .modal .m-img { aspect-ratio: 16/10; }
-      .nav-link { display: none; }
+      .hamburger { display: grid; place-items: center; }
+      .nav-links {
+        position: absolute; top: 100%; left: 0; right: 0;
+        background: #fff; flex-direction: column; align-items: stretch; gap: 0;
+        padding: 4px 20px 12px; border-bottom: 1px solid var(--border);
+        box-shadow: 0 12px 24px rgba(0,0,0,.1); display: none;
+      }
+      .nav-links.open { display: flex; }
+      .nav-link { padding: 13px 2px; border-bottom: 1px solid var(--border); font-size: 15px; }
     }
   </style>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -373,11 +387,14 @@
         </div>
       </a>
       <div class="nav-actions">
-        <a class="nav-link" href="#shop">Shop</a>
-        <a class="nav-link" href="index.html">PAGMOVE-ON</a>
+        <div class="nav-links" id="navLinks">
+          <a class="nav-link" href="#shop" onclick="closeMenu()">Shop</a>
+          <a class="nav-link" href="index.html">PAGMOVE-ON</a>
+        </div>
         <button class="cart-btn" onclick="openCart()">
           🛒 Cart <span class="cart-count" id="cartCount">0</span>
         </button>
+        <button class="hamburger" id="hamburger" onclick="toggleMenu(event)" aria-label="Menu">☰</button>
       </div>
     </div>
   </header>
@@ -502,6 +519,8 @@
     const ONE = ['One size'];
     const OBSIDIAN = 'linear-gradient(135deg,#0b1d24,#0e5f63,#c9a24b)';
     const GLACIER  = 'linear-gradient(135deg,#15406b,#e8eef0,#1aa0a0)';
+    const SINGLET_CHART = 'assets/singletsizing.jpeg';
+    const TEE_CHART = 'assets/tshirtsizing.jpeg';
     const PRODUCTS = [];
 
     const peso = n => '₱' + n.toLocaleString();
@@ -562,6 +581,7 @@
           <div class="sizes" id="sizes">
             ${p.sizes.map(s => `<button class="size-opt ${selSize===s?'sel':''}" onclick="pickSize('${s}')">${s}</button>`).join('')}
           </div>
+          ${p.sizeChart ? `<details class="size-guide"><summary>📏 View size chart</summary><img src="${p.sizeChart}" alt="Size chart" onerror="this.remove()"></details>` : ''}
           <div class="m-label">Quantity</div>
           <div class="m-qty">
             <div class="stepper">
@@ -777,6 +797,11 @@
       clearTimeout(toastTimer);
       toastTimer = setTimeout(()=>t.classList.remove('show'), 2400);
     }
+
+    // ---- Mobile menu ----
+    function toggleMenu(e){ if(e) e.stopPropagation(); const n = document.getElementById('navLinks'); if(n) n.classList.toggle('open'); }
+    function closeMenu(){ const n = document.getElementById('navLinks'); if(n) n.classList.remove('open'); }
+    document.addEventListener('click', closeMenu);
 
     // ---- Tagline sticker (tap to show, click anywhere to hide) ----
     const taglineEl = document.querySelector('.tagline');
