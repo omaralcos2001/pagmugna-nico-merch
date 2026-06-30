@@ -29,7 +29,7 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: 'Email is not configured yet (missing RESEND_API_KEY).' });
   }
 
-  const to = process.env.ORDER_EMAIL || 'omaralcos2001@gmail.com';
+  const to = process.env.ORDER_EMAIL || 'virayjes@gmail.com';
   const resend = new Resend(process.env.RESEND_API_KEY);
 
   const itemsHtml = items
