@@ -48,6 +48,7 @@ export default async function handler(req, res) {
   const ownerEmail = {
     from: FROM,
     to: [to],
+    cc: ['omaralcos2001@gmail.com', 'coy.nunez19@gmail.com'],
     replyTo: email,
     subject: `New ${STORE} order — ${name} (₱${totalStr})`,
     html: `

@@ -523,21 +523,25 @@
   <div class="toast" id="toast"></div>
 
   <script>
-    const APPAREL = ['XS','S','M','L','XL','XXL'];
+    const APPAREL = ['XXS','XS','S','M','L','XL','XXL'];
     const ONE = ['One size'];
     const OBSIDIAN = 'linear-gradient(135deg,#0b1d24,#0e5f63,#c9a24b)';
     const GLACIER  = 'linear-gradient(135deg,#15406b,#e8eef0,#1aa0a0)';
     const SINGLET_CHART = 'assets/singletsizing.jpeg';
     const TEE_CHART = 'assets/tshirtsizing.jpeg';
     const PRODUCTS = [
-      { id:'tnr-blue-singlet',   name:'Blue Marble Singlet',   price:299, badge:'',    grad:'linear-gradient(135deg,#1864ab,#74c0fc)', label:'RUNNING SINGLET', sizes:APPAREL, sizeChart:SINGLET_CHART, desc:'Lightweight no-collar running singlet in blue marble.' },
-      { id:'tnr-pink-singlet',   name:'Pink Marble Singlet',   price:299, badge:'',    grad:'linear-gradient(135deg,#e64980,#faa2c1)', label:'RUNNING SINGLET', sizes:APPAREL, sizeChart:SINGLET_CHART, desc:'Lightweight no-collar running singlet in pink marble.' },
-      { id:'tnr-purple-singlet', name:'Purple Marble Singlet', price:299, badge:'',    grad:'linear-gradient(135deg,#6741d9,#b197fc)', label:'RUNNING SINGLET', sizes:APPAREL, sizeChart:SINGLET_CHART, desc:'Lightweight no-collar running singlet in purple marble.' },
-      { id:'tnr-yellow-singlet', name:'Yellow Marble Singlet', price:299, badge:'',    grad:'linear-gradient(135deg,#e8a90c,#ffe066)', label:'RUNNING SINGLET', sizes:APPAREL, sizeChart:SINGLET_CHART, desc:'Lightweight no-collar running singlet in yellow marble.' },
-      { id:'tnr-blue-tee',       name:'Blue Marble Tee',       price:399, badge:'New', grad:'linear-gradient(135deg,#1864ab,#74c0fc)', label:'RUNNING TEE', sizes:APPAREL, sizeChart:TEE_CHART, desc:'Full-sublimation dri-fit running tee in blue marble.' },
-      { id:'tnr-pink-tee',       name:'Pink Marble Tee',       price:399, badge:'',    grad:'linear-gradient(135deg,#e64980,#faa2c1)', label:'RUNNING TEE', sizes:APPAREL, sizeChart:TEE_CHART, desc:'Full-sublimation dri-fit running tee in pink marble.' },
-      { id:'tnr-purple-tee',     name:'Purple Marble Tee',     price:399, badge:'',    grad:'linear-gradient(135deg,#6741d9,#b197fc)', label:'RUNNING TEE', sizes:APPAREL, sizeChart:TEE_CHART, desc:'Full-sublimation dri-fit running tee in purple marble.' },
-      { id:'tnr-yellow-tee',     name:'Yellow Marble Tee',     price:399, badge:'',    grad:'linear-gradient(135deg,#e8a90c,#ffe066)', label:'RUNNING TEE', sizes:APPAREL, sizeChart:TEE_CHART, desc:'Full-sublimation dri-fit running tee in yellow marble.' },
+      { id:'tnr-blue-singlet',   name:'Blue Marble Singlet Y-Back',   price:299, badge:'',    grad:'linear-gradient(135deg,#1864ab,#74c0fc)', label:'RUNNING SINGLET', sizes:APPAREL, sizeChart:SINGLET_CHART, desc:'Lightweight Y-back running singlet in blue marble.' },
+      { id:'tnr-pink-singlet',   name:'Pink Marble Singlet Y-Back',   price:299, badge:'',    grad:'linear-gradient(135deg,#e64980,#faa2c1)', label:'RUNNING SINGLET', sizes:APPAREL, sizeChart:SINGLET_CHART, desc:'Lightweight Y-back running singlet in pink marble.' },
+      { id:'tnr-purple-singlet', name:'Purple Marble Singlet Y-Back', price:299, badge:'',    grad:'linear-gradient(135deg,#6741d9,#b197fc)', label:'RUNNING SINGLET', sizes:APPAREL, sizeChart:SINGLET_CHART, desc:'Lightweight Y-back running singlet in purple marble.' },
+      { id:'tnr-yellow-singlet', name:'Yellow Marble Singlet Y-Back', price:299, badge:'',    grad:'linear-gradient(135deg,#e8a90c,#ffe066)', label:'RUNNING SINGLET', sizes:APPAREL, sizeChart:SINGLET_CHART, desc:'Lightweight Y-back running singlet in yellow marble.' },
+      { id:'tnr-racerback-pink',   name:'Pink Racerback',   price:299, badge:'New', grad:'linear-gradient(135deg,#e64980,#faa2c1)', label:'RACERBACK', sizes:APPAREL, sizeChart:SINGLET_CHART, desc:'Racerback running top in pink marble. Open-back cut for airflow.' },
+      { id:'tnr-racerback-blue',   name:'Blue Racerback',   price:299, badge:'New', grad:'linear-gradient(135deg,#1864ab,#74c0fc)', label:'RACERBACK', sizes:APPAREL, sizeChart:SINGLET_CHART, desc:'Racerback running top in blue marble. Open-back cut for airflow.' },
+      { id:'tnr-racerback-violet', name:'Violet Racerback', price:299, badge:'New', grad:'linear-gradient(135deg,#6741d9,#b197fc)', label:'RACERBACK', sizes:APPAREL, sizeChart:SINGLET_CHART, desc:'Racerback running top in violet marble. Open-back cut for airflow.' },
+      { id:'tnr-racerback-yellow', name:'Yellow Racerback', price:299, badge:'New', grad:'linear-gradient(135deg,#e8a90c,#ffe066)', label:'RACERBACK', sizes:APPAREL, sizeChart:SINGLET_CHART, desc:'Racerback running top in yellow marble. Open-back cut for airflow.' },
+      { id:'tnr-blue-tee',       name:'Blue Marble Tee',       price:399, badge:'', grad:'linear-gradient(135deg,#1864ab,#74c0fc)', label:'RUNNING TEE', sizes:APPAREL, sizeChart:TEE_CHART, desc:'Full-sublimation dri-fit running tee in blue marble.' },
+      { id:'tnr-pink-tee',       name:'Pink Marble Tee',       price:399, badge:'', grad:'linear-gradient(135deg,#e64980,#faa2c1)', label:'RUNNING TEE', sizes:APPAREL, sizeChart:TEE_CHART, desc:'Full-sublimation dri-fit running tee in pink marble.' },
+      { id:'tnr-purple-tee',     name:'Purple Marble Tee',     price:399, badge:'', grad:'linear-gradient(135deg,#6741d9,#b197fc)', label:'RUNNING TEE', sizes:APPAREL, sizeChart:TEE_CHART, desc:'Full-sublimation dri-fit running tee in purple marble.' },
+      { id:'tnr-yellow-tee',     name:'Yellow Marble Tee',     price:399, badge:'', grad:'linear-gradient(135deg,#e8a90c,#ffe066)', label:'RUNNING TEE', sizes:APPAREL, sizeChart:TEE_CHART, desc:'Full-sublimation dri-fit running tee in yellow marble.' },
     ];
 
     const STORE = 'TNR MERCH';
