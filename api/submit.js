@@ -29,7 +29,7 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: 'Email is not configured yet (missing RESEND_API_KEY).' });
   }
 
-  const to = process.env.ORDER_EMAIL || 'virayjes@gmail.com';
+  const to = process.env.ORDER_EMAIL || 'omaralcos2001@gmail.com';
   const resend = new Resend(process.env.RESEND_API_KEY);
 
   const itemsHtml = items
@@ -48,7 +48,7 @@ export default async function handler(req, res) {
   const ownerEmail = {
     from: FROM,
     to: [to],
-    cc: ['omaralcos2001@gmail.com', 'coy.nunez19@gmail.com'],
+    cc: ['coy.nunez19@gmail.com'],
     replyTo: email,
     subject: `New ${STORE} order — ${name} (₱${totalStr})`,
     html: `
@@ -108,7 +108,7 @@ export default async function handler(req, res) {
     return res.status(200).json({ ok: true, customerSent });
   } catch (err) {
     console.error('Email send failed:', err?.message || err);
-    return res.status(500).json({ error: 'Could not send your order. Please try again.' });
+    return res.status(500).json({ error: 'Could not send your order. Please try again.', detail: String(err?.message || err) });
   }
 }
 
