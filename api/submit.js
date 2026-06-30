@@ -85,9 +85,15 @@ export default async function handler(req, res) {
   };
 
   try {
-    // Owner email is required to succeed
-    const ownerRes = await resend.emails.send(ownerEmail);
-    if (ownerRes?.error) throw new Error(ownerRes.error.message || 'owner email failed');
+    // Owner email must succeed. CC addresses may be blocked until a domain is
+    // verified in Resend — if the CC'd send is rejected, retry without CC.
+    let ownerRes = await resend.emails.send(ownerEmail);
+    if (ownerRes?.error) {
+      console.warn('Send with CC failed, retrying without CC:', ownerRes.error.message);
+      const { cc, ...noCc } = ownerEmail;
+      ownerRes = await resend.emails.send(noCc);
+      if (ownerRes?.error) throw new Error(ownerRes.error.message || 'owner email failed');
+    }
 
     // Customer email is best-effort (may be blocked until a domain is verified in Resend)
     let customerSent = true, customerNote;
